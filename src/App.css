@@ -1,10 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
 :root {
     --font: "Inter", sans-serif;
     --primary-100:#F26CF9;
@@ -19,6 +15,7 @@
     --secondary-70:#707DBF;
     --secondary-60:#ABB4DD;
     --secondary-50:#D3DAF9;
+     --secondary-40:#d6dcf3;
     --yellow-100:#FFCA39;
     --yellow-90:#FFEFC3;
     --grey-10:#FFFFFF;
@@ -41,11 +38,14 @@
     --cool-grey-80:#56565C;
     --cool-grey-90:#39393D;
     --cool-grey-100:#131314;
+    --box-shadow3: 0 5px 5px 1px rgba(0, 0, 0, 0.05);
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0, 0, 0, 0.05);
+    --box-shadow2: 0 0 5px 2px rgba(137, 137, 137, 0.1);
     --headline-color:var(--secondary-100);
     --logotype-text-color: var(--secondary-110);
     --text-color:var(--grey-100);
     --text-muted-color:var(--grey-70);
-    --extra-muted-color: var(--grey-20);
+    --extra-muted-color: var(--grey-50);
     --background-color: var(--grey-10);
     --nav-background-color: var(--cool-grey-20);
     --header-background-color:var(--grey-20);
@@ -58,14 +58,23 @@
     --separator-background-color:var(--grey-10);
     --link-color:var(--secondary-100);
     --link-hover-color:var(--primary-90);
+    /*CARD*/
     --card-background-color:var(--grey-10);
     --card-border-color:var(--grey-20);
+    /*BUTTON*/
     --button-text-color:var(--grey-90);
     --button-border-color:transparent;
     --button-background-color:transparent;
     --button-hover-text-color:var(--grey-90);
     --button-hover-border-color:transparent;
     --button-hover-background-color:transparent;
+     /*BUTTON-CLOSE*/
+    --button-close-text-color:var(--secondary-100);
+    --button-close-border-color:transparent;
+    --button-close-background-color:transparent;
+    --button-close-hover-text-color:var(--secondary-70);
+    --button-close-hover-border-color:transparent;
+    --button-close-hover-background-color:transparent;
     /*BUTTON-SIGNOUT*/
     --button-signout-text-color: var(--text-muted-color);
     --button-signout-border-color: transparent;
@@ -80,31 +89,54 @@
     --button-link-hover-text-color:var(--primary-100);
     --button-link-hover-border-color:transparent;
     --button-link-hover-background-color:transparent;
+     /*BUTTON-PRIMARY*/
     --button-primary-text-color:var(--grey-10);
     --button-primary-border-color:var(--primary-100);
     --button-primary-background-color:var(--primary-100);
     --button-primary-hover-text-color:var(--grey-10);
     --button-primary-hover-border-color:var(--primary-90);
     --button-primary-hover-background-color:var(--primary-90);
+     /*BUTTON-SECONDARY*/
     --button-secondary-text-color:var(--secondary-100);
     --button-secondary-border-color:var(--cool-grey-10);
     --button-secondary-background-color:var(--cool-grey-10);
+    /*BUTTON-OUTLINE*/
     --button-outline-text-color: var(--grey-90);
     --button-outline-border-color: var(--grey-30);
-    --button-outline-background-color: transparent;
+    /*BUTTON EXTERNAL*/
+    --btn-external-background-color: var(--grey-30);
+    --btn-external-border-color: transparent;
+    --btn-external-text-color: var(--grey-100);
+    --btn-external-hover-background-color: var(--grey-20);
+    --btn-external-hover-border-color: transparent;
+    --btn-external-hover-text-color: var(--grey-100);
+     /*BUTTON-ADMIN*/
+    --button-admin-text-color:var(--grey-10);
+    --button-admin-border-color:var(--grey-10);
+    --button-admin-background-color:#2D99FF;
+    --button-admin-hover-text-color:var(--grey-10);
+    --button-admin-hover-border-color:var(--grey-10);
+    --button-admin-hover-background-color:#2D7DCC;
+ /*SEARCH FORM*/
     --input-background-color: var(--grey-10);
     --input-border-color: var(--grey-40);
     --input-border-focus-color: var(--primary-50);
     --input-text-color: var(--grey-100);
     --input-placeholder-color: var(--grey-50);
+/*BOOk  FORM*/
+    --book-input-background-color: var(--grey-10);
+    --book-input-border-color: var(--grey-40);
+    --book-input-border-focus-color: var(--primary-50);
+    --book-input-text-color: var(--grey-80);
+    --book-input-placeholder-color: var(--extra-muted-color);
+/*CHECKBOK*/
     --checkbox-background-color: var(--grey-10);
     --checkbox-border-color: var(--grey-40);
     --checkbox-checked-background-color: var(--primary-100);
     --checkbox-checked-border-color: var(--primary-100);
     --checkbox-checked-text-color: var(--grey-10);
-
-
 }
+
   /* =========================
    BUTTONS
 ========================= */
@@ -119,7 +151,6 @@
     gap: .5rem;
     cursor: pointer;
     padding: .8rem 1rem;
-    
 }
 .btn-signout {
     width: 100%;
@@ -136,27 +167,180 @@
         border-color: var(--button-signout-hover-border-color);
         text-decoration: none;
         }
+    .btn-check-event {
+         border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1rem;
+        font-weight: 600;
+        background: var(--button-primary-background-color);
+        color: var(--button-primary-text-color);
+        border: var(--button-primary-border-color);
+    &:hover {
+        color: var(--button-primary-hover-text-color);
+        border: var(--button-primary-hover-border-color);
+        background: var(--button-primary-hover-background-color); 
+        }
+    }
+    .btn-admin {
+        background-color: var(--button-admin-background-color);
+        color: var(--button-admin-text-color);
+        border: var(--button-admin-border-color);
+        
+        &:hover {
+            background-color: var(--button-admin-hover-background-color);
+            color: var(--button-admin-hover-text-color);
+            border: var(--button-admin-hover-border-color);
+        }
+    }
+    .btn-primary, 
+    .btn-book-event {
+        background-color: var(--button-primary-background-color);
+        color: var(--button-primary-text-color);
+        border: var(--button-primary-border-color);
+        
+        &:hover {
+            background-color: var(--button-primary-hover-background-color);
+            color: var(--button-primary-hover-text-color);
+            border: var(--button-primary-hover-border-color);
+        }
+        
+    }
+    .btn-auth-submit {
+        background-color:  #2D99FF;
+        color: var(--grey-10);
+        font-weight: 500;
+        border: 1px solid var(--grey-10);
+        margin-block: 1rem;
+        width: 100%;
+         &:hover {
+            background-color: #2D7DCC;
+            color: var(--button-primary-hover-text-color);
+               border: 1px solid var(--grey-10);
+        }
+    }
+    .btn-submit-booking {
+        background-color: var(--button-primary-background-color);
+        color: var(--grey-10);
+        border: transparent;
+        font-weight: 500;
+        margin-block: 1rem;
+        width: 100%;
+ 
+        &:hover {
+            background-color: var(--button-primary-hover-background-color);
+            color: var(--button-primary-hover-text-color);
+            border: var(--button-primary-hover-border-color);
+        }
+
+    }
+
+    .btn-close {
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--button-close-background-color);
+    color: var(--button-close-text-color);
+    border: var(--button-close-border-color);
+    
+        &:hover {
+        color: var(--button-close-hover-text-color);
+        border: var(--button-close-hover-border-color);
+        background: var(--button-close-hover-background-color); 
+        }
+
+}
+
+    .btn-back {
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1rem;
+        font-weight: 600;
+        background: var(--secondary-60);
+        color: var(--grey-10);
+        border: transparent;
+    &:hover {
+        color: var(--grey-10);
+        border: transparent;
+        background: var(--secondary-50); 
+        }
+    }
+
+    .btn-external {
+    background-color: var(--btn-external-background-color);
+    border: 1px solid var(--btn-external-border-color);
+    color: var(--btn-external-text-color);
+    font-size: 1rem;
+    font-style: normal;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    &:hover {
+        background-color: var(--btn-external-hover-background-color);
+        border: 1px solid var(--btn-external-hover-border-color);
+        color: var(--btn-external-hover-text-color);
+    }
+} 
+
+      .price-standard {
+            color: var(--primary-100);
+            font-weight: 700;
+      }
+    
     /* =========================
    GLOBAL RESETS
 ========================= */
-html, body {
+    *, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+} 
+    
+html, body {
+    
     font-size: 1rem;
     font-weight: 400;
     font-style: normal;
     font-family: var(--font);
     color: var(--text-color);
+    overflow: hidden;
     background-color: var(--background-color);
 }
-
+ a, Link, NavLink {
+    text-decoration: none;
+    color:#2D99FF;
+    font-weight: 600;
+ }
 /* =========================
    STRUCTURE AND LAYOUT
 ========================= */
+#root {
+    margin: .4rem;
+     overflow-y: scroll;
+     padding-bottom: .2rem;
+     height: 100dvh;
+}
+#root::-webkit-scrollbar {
+  display: none; /* by chat GPT - Chrome, Safari, Opera */
+}
 .center-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100dvh;
+    background-color: var(--grey-20);
+    
 }
 
 .portal-wrapper {
@@ -202,7 +386,6 @@ html, body {
         flex-direction: column;
         gap: 2.5rem;
     }
-
     
 }
 
@@ -213,10 +396,10 @@ header {
     font-size: .9rem;
     font-weight: 100;
     border-radius: 1rem;
-    padding-inline: 1.5rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
+    padding-left: 1.5rem;
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr 1fr auto;
     align-items: center;
     gap: 1rem;
 }
@@ -235,17 +418,19 @@ footer {
     border-radius: 1rem;
     padding: 1.5rem;
     font-size: 0.8rem;
-}
-.footer span {
-    color: var(--text-muted-color);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
 }
 
 .card {
     background-color: var(--card-background-color);
     border: 1px solid var(--card-border-color);
     color: var(--text-color);
-    padding: 1.2rem;
     border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow3);
 }
 
 /* =========================
@@ -298,6 +483,7 @@ gap: 0.5rem;
 /* =========================
    HEADER
 ========================= */
+
 .headline h1 {
     margin-bottom: .5rem;
 }
@@ -306,7 +492,7 @@ gap: 0.5rem;
    align-items: center;
    padding-right: 1rem;
    position: relative;
-   width: 450px;
+   width: 100%;
 
 }
 .search-input {
@@ -315,7 +501,7 @@ gap: 0.5rem;
     font-size: 1em;
     border-radius: 1rem;
     padding-left: .6rem;
-    color: var(--extra-muted-color);
+    
     border: var(--transparent);
     background-color: var(--input-background-color);
     transition: border-color 0.15s ease-in-out;
@@ -325,7 +511,8 @@ gap: 0.5rem;
         width: 100%;
     } 
 .search-input::placeholder {
-        font-size: .9em;
+        font-size: .9rem;
+        color: var(--extra-muted-color);
     }
 .search-button {
     position: absolute;
@@ -341,8 +528,10 @@ gap: 0.5rem;
 .account-container {
     display: flex;
     gap: .6rem;
-}
-.account-info {
+     padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    .account-info {
     display: flex;
     flex-direction: column;
 }
@@ -352,22 +541,949 @@ gap: 0.5rem;
 .account-info .role {
 color: var(--text-muted-color)
 }
-/* =========================
-   EVENT CARD
+.user-image {
+                border-radius: 50%;
+                height: 30px;
+                width: 30px;
+                border: 3px solid var(--background-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            .user-avatar {
+                object-fit:cover;
+                height: 26px;
+                width: 26px;
+            }
+}
+}
+  /* =========================
+   DROPDOWNS
 ========================= */
-.event.card {
-    width: 275px;
-    height: 346px;
+
+/*Account Dropdown*/
+.account-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 25px;
+    padding: 2rem;
+    margin-block: .5rem;
+    background-color: var(--background-color);
+    border: 1px solid var(--grey-30);
+    border-radius: 0.5rem;
+    box-shadow: var(--box-shadow2);
+    z-index: 10;
+    width: 150px;
+    height: auto;
+
+
+
+      .dropdown-action {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        color: black;
+
+        &:hover {
+          background-color: var(--grey-10);
+        }
+      }
+    
+  }
+
+  /*Dropdowns*/
+.dropdown-actions {
+    position: absolute;
+    top: 50px;
+    right: 25px;
+    padding: 2rem;
+    margin-block: .5rem;
+    background-color: var(--background-color);
+    border: 1px solid var(--grey-30);
+    border-radius: 0.5rem;
+    box-shadow: var(--box-shadow2);
+    z-index: 10; 
+    padding: 1rem; 
+
+
+
+      .dropdown-action {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        color: var(--headline-color);
+        font-weight: 600;
+        border-radius: 1rem;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--primary-40);
+          border-radius: .8rem;
+        }
+      }
+    
+  }
+  /* =========================
+   MODAL
+========================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    
+    .close-icon {
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+  }
 }
-.event-image-container {
-    border-radius: 1rem;
+
+#edit-profile-modal, 
+#add-event-modal,
+#add-user-modal,
+#edit-user-modal {
+  background: var(--background-color);
+  border-radius: .8rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
 }
-.event-image {
-    height: 209px;
-    width: 250px;
+#add-user-modal,
+#edit-user-modal  {
+  max-height: 95vh; 
+  overflow-y: auto;  
+  scrollbar-width: none;
 }
 
 /* =========================
    FORM
 ========================= */
+ form {
+    width: 100%;
+    text-align: left;
+    display: grid;
+    gap: .5rem;
+
+    .card-header {
+        display: flex;
+        justify-content: flex-end;
+      
+}
+.form-group {
+    display: grid;
+    position: relative;
+    margin-bottom: .8rem;
+    width: 100%;
+} 
+.form-label {
+    font-size: 1em;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--input-text-color);
+}
+.form-input {
+    width: 100%;
+    height: 40px;
+    font-size: 1em;
+    font-style: normal;
+    padding: .8rem 1rem;
+    outline: none;
+    border-radius: .9rem;
+    transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    border: 1px solid var(--book-input-border-color);
+    background-color: var(--book-input-background-color);
+    color: var(--book-input-text-color);
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+
+} .form-input:focus {
+    border: 1px solid var(--book-input-border-focus-color);
+} .form-input::placeholder {
+    color: var(--book-input-placeholder-color);
+    font-size: .9rem;
+}
+
+}
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+
+
+
+    .image-previewer {
+    border: 2px dashed var(--border-color);
+    height: 150px;
+    width: 150px;
+    margin: 1.5rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+
+} 
+.pencil-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem; 
+  color: white;
+  background-color: rgba(0, 0, 0, 0.45); 
+  border-radius: 50%;
+  padding: 0.5rem;
+  z-index: 2;
+  pointer-events: none; 
+}
+.image-previewer.circle {
+        border-radius: 50%;
+    } 
+.image-previewer.square {
+        border-radius: 16px;
+    } 
+img.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+/* =========================
+   FOOTER
+========================= */
+.footer-text {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-text .copyright {
+    color: var(--text-muted-color);
+}
+
+footer .social-icons {
+    display: flex;
+    gap: 1rem;
+     align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+footer a {
+    color: var(--extra-muted-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+footer a:hover {
+    color: var(--text-muted-color); 
+}
+/* =========================
+   EVENT LIST
+========================= */
+.event-list-page,
+.user-list-page {
+
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+
+    .event-list,
+    .user-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 1rem;
+    row-gap: 2rem;
+    padding: 1rem;
+
+}
+
+    @media (min-width: 568px) {
+    .event-list, 
+    .user-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    }
+    @media (min-width: 868px) {
+    .event-list, 
+    .user-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    }
+    @media (min-width: 1200px) {
+    .event-list, 
+    .user-list {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    }
+    
+}
+
+.loading {
+    color: var(--text-muted-color);
+}
+   
+
+/* =========================
+   EVENT CARD
+========================= */
+.event.card{
+    width: 350px;
+    height: auto;
+    display: grid;
+    justify-content: center;
+    position: relative;
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        margin-bottom: .8rem;
+
+        .ellipsis-button {
+            color: var(--text-muted-color);
+            cursor: pointer;
+        }
+    }
+
+
+    .image-container {
+    height: 250px;
+    width: 300px;
+    overflow: hidden;
+    border-radius: 1rem;
+    background-color: var(--grey-30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .event-image {
+    object-fit:cover;
+    }
+    }
+
+    
+    .card-body {
+        display: grid;
+        gap: .5rem;
+
+        .date-time {
+        color: var(--extra-muted-color);
+        font-size: .8rem;
+        }
+        .event-title {
+        color: var(--text-color);
+        font-weight: 700;
+        &:hover {
+            color: var(--link-hover-color);
+        }
+        }
+        
+        .event-location {
+        display: flex;
+        align-items: center;
+        gap: .3rem;
+        color: var(--extra-muted-color);
+        font-size: .8rem;
+        }
+    }
+    .card-footer {
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: .8rem;
+    
+    .event-price {
+    color: var(--primary-100);
+    font-weight: 600;
+    }
+    }
+   .admin-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+   }
+}
+
+/* =========================
+   USER CARD
+========================= */
+.user.card {
+    width: 350px;
+    height: auto;
+    display: grid;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .ellipsis-button {
+            color: var(--text-muted-color);
+            cursor: pointer;
+        }
+    }
+.card-body {
+    display: grid;
+    gap: 1rem;
+    text-align: center;
+
+      .image-container {
+    height: 200px;
+    width: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: var(--grey-30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--background-color);
+
+    .user-image {
+    object-fit:contain;
+    height: 200px;
+    width: 200px;
+    }
+    }
+    .user-address {
+        display: grid;
+        gap: 0.5rem;
+    }
+    .user-postalcode-city {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+    }
+}
+   
+
+}
+/* =========================
+   EVENT DETAILS PAGE
+========================= */
+/*Event details*/
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:"event seating-plan"
+                        "event terms";
+   justify-content: center;
+   gap: 2rem;
+
+
+
+    .event-details.card {
+    padding: 0;
+    grid-area: event;
+    width: 720px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 1rem;
+    position: relative;
+
+          .card-header {
+            width:100%;
+            border-radius: 1rem 1rem 0 0;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--main-background-color);
+            .event-details-image {
+                width:100%;
+             
+            }
+
+            .event-tags {
+                display: flex;
+                justify-content: space-between;
+                padding: 0 .7rem;
+              
+            }
+            .event-type-tag {
+                background-color: white;
+                border-radius: 1rem;
+                padding: .3rem;
+                font-size: 11px;
+                font-weight: 500;
+                  position: absolute;
+                top: 10px;
+            }
+            .tag-status {
+                background-color: var(--primary-30);
+                border-radius: 1rem;
+                padding: .3rem;
+                font-size: 11px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+
+            .dot {
+                position: absolute;
+                font-size: 1rem;
+                background-color: var(--primary-100);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .dot-red {
+                    color: var(--dot-red-text-color);
+                } .dot.dot-green {
+                    color: var(--dot-green-text-color);
+                } .dot.dot-yellow {
+                    color: var(--dot-yellow-text-color);
+                } 
+            } 
+    }
+
+          }  
+            
+
+    
+    .card-body{
+
+        bottom: 0;
+        display: grid;
+        gap: 2rem;
+        padding-block: .5rem;
+        padding-inline: 1rem;
+
+        .event-details-header {
+        display: flex;
+         color: var(--text-color);
+        font-weight: 700;
+        margin-top: 0;
+
+        
+    }
+    
+    .event-details-info {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "date-time price"
+                              "event-location price"
+                              "divider divider"
+                              "about about";
+    }
+    .date-time {
+        grid-area: date-time;
+        color: var(--extra-muted-color);
+        font-size: .8rem;
+        display: flex;
+        align-items: center;
+        gap: .3rem;
+    }
+  
+    
+    .event-location {
+    grid-area: event-location;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    color: var(--extra-muted-color);
+    font-size: .8rem;
+    }
+    .event-price {
+    grid-area: price;
+    color: var(--primary-100);
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    p {
+        color: var(--extra-muted-color);
+        font-size: .7rem;
+    }
+    }
+    .event-details-about {
+        grid-area: about;
+        display: grid;
+        gap: 1rem;
+
+        .event-description {
+            font-size: 12px;
+            color: var(--grey-80);
+        }
+    }
+    }
+
+.card-footer {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: .5rem;
+}
+}
+
+  /*Seating plan*/
+  .seating-plan.card {
+        grid-area: seating-plan;
+        display: flex;
+        flex-direction: column;
+        
+        
+        h4 {
+            grid-area: title;
+            margin-bottom: 1.5rem;
+        }
+        
+                .seat-plan-distribution {
+            display: flex;
+            align-items: center;
+            gap: 3rem;   
+            .event-image {
+                cursor: pointer;
+            } 
+            
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  pointer-events: none; /* disables click */
+}
+
+.popup-content img {
+  width: 450px;
+  height: 700px;
+  border-radius: 10px;
+  pointer-events: auto;
+ transition: transform 0.3s ease;
+}
+}
+        .seat-plan-categories {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+    .ticket-category-benefits {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        h5 {
+            color: var(--headline-color);
+        }
+
+        .ticket-benefits-descriptions {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            .VIP-lounge.card,
+            .backstage.card {
+                background-color: var(--section-background-color);
+                padding: 1rem;
+                width: 200px;
+                h6 {
+                    margin-bottom: .5rem;
+                    
+                }
+
+                
+                .ticket-benefits-points {
+                    font-size: .7rem;
+                    color: var(--cool-grey-60);
+                    display: grid;
+                    align-items: left;
+                    justify-content: lext;
+                    gap: .5rem;
+
+                    .ticket-benefits-point {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
+                }
+             .price-standard {
+                font-size: .8rem;
+                margin-top: 1rem;
+                }
+
+            }
+
+        }
+
+    }
+
+  }
+
+/*terms and conditions*/
+.terms.card {
+    grid-area: terms;
+    max-height: 350px;
+    overflow-y: auto;
+    line-height: 2;
+    h4 {
+        margin-bottom: 1rem;
+    }
+    h5 {
+        margin-left: 1rem;
+        color: var(--cool-grey-90);
+
+    }
+
+      ul li {
+        font-size: .8rem;
+        margin-left: 3rem;
+        color: var(--text-muted-color);
+      }
+
+   /* scrollbar- width */
+&::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 1rem;
+}
+
+ 
+/* scrollbar-Handle */
+&::-webkit-scrollbar-thumb {
+  background: var(--grey-40); 
+}
+
+/* scrollbar-Handle on hover */
+&::-webkit-scrollbar-thumb:hover {
+  background: var(--grey-50); 
+}
+  }
+
+}
+
+
+
+/* =========================
+   DIVIDER
+========================= */
+    .divider {
+        grid-area: divider;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2rem 0;
+        span {
+            color: var(--extra-muted-color);
+        }
+} .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--grey-30);
+    } .divider:not(:empty)::before {
+        margin-right: 1rem;
+    } .divider:not(:empty)::after {
+        margin-left: 1rem;
+    } 
+
+    
+/* =========================
+   FORM BOOK EVENT
+========================= */
+
+
+.form.card {
+    grid-area: event;
+
+    .book-event-details {
+            display: flex;
+            gap: 1rem;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 1rem;
+            box-shadow: var(--box-shadow2);
+         
+         .image-container {
+            height: 80px;
+            width: 100px;
+            overflow: hidden;
+            border-radius: 1rem;
+            background-color: var(--grey-30);
+         }
+         .book-event-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            width: 100%;
+            span {
+                color: var(--extra-muted-color);
+                font-size: .8rem;
+            }
+            .book-event-title {
+                display: grid;
+            }
+             .event-price {
+            grid-area: price;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            font-size: 1.2rem;
+            p {
+                color: var(--extra-muted-color);
+                font-size: .7rem;
+            }
+              .price-standard {
+            color: var(--primary-100);
+            font-weight: 700;
+            font-size: 1rem;
+      }
+    
+         }
+        
+    }
+        }
+}
+   
+
+/* =========================
+   MY BOOKINGS TABLE
+========================= */
+
+    table {
+        height: 90%;
+    width: 100%;
+    border-collapse: collapse;
+    } 
+   
+    table tr {
+        grid-template-areas: "event date time price tickets total link";
+        grid-template-columns: 3fr 2fr 2fr 2fr 2fr 2fr 2fr;
+        display: grid;
+        gap: 2rem;
+        align-items: center;
+        width: 100%;
+        border-radius: 16px;
+        padding: 1rem;
+    } 
+   
+    table thead, table tbody {
+        display: contents;
+    } 
+        table thead > tr {
+            background-color: var(--nav-background-color);
+            padding: .7rem, 1rem;
+            margin: .5rem 0;
+        }
+    table tbody > tr {
+            padding: .7rem, 1rem;
+            margin: .5rem 0;
+        } 
+
+    table th, table td {
+        width: 100%;
+        padding: 0 1rem;
+        text-align: left;
+    } 
+    table td img {
+            width: 48px;
+            height: 48px;
+        }
+.albookings-table {
+
+    .event-info {
+     display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "image title" "image streetname" "image city";
+    column-gap: 2rem;
+    align-items: center;
+        .event-image {
+        grid-area: image;
+        width: 40px;
+        height: 40px;
+    }
+
+         .event-title {
+        grid-area: title;
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    .event-streetname {
+        color: var(--text-muted-color);
+
+    }
+
+    .event-postalcode-city {
+        color: var(--text-muted-color);
+        display: flex;
+        gap: .5rem;
+    }
+
+    }
+    
+}
+    
+    /* =========================
+   AUTHENTICATION PAGES
+========================= */
+    #login, #signup {
+    padding: 1rem 3rem 1rem 3rem;
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+
+    .card-header h1 {
+        margin-bottom: 2rem;
+        font-weight: 600;
+    }
+
+    .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .4rem;
+        font-weight: 500;
+    }
+} 
+.form-group-checkbox {
+    padding: .7rem 0;
+    display: flex;
+    justify-content: left;
+    gap: .5rem;
+    font-weight: 500;
+} 
+#login .checkbox-label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+} 
+#signup .checkbox-label {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+} 
+#signup .card-header, #login .card-header {
+    justify-content: center;
+    margin-block: 1rem;
+}
+   
 

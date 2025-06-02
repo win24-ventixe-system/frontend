@@ -4,6 +4,7 @@ import VentixeIcon from '/images/icon_ventixe.svg'
 import { LuLayoutDashboard } from "react-icons/lu"
 import { BsTicketPerforated } from "react-icons/bs"
 import { GrCheckboxSelected } from "react-icons/gr"
+import { FaUsers } from "react-icons/fa"
 import SignOut from './SignOut'
 
 
@@ -38,6 +39,11 @@ const Nav = () => {
       <NavLink to="/allbookings" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
       <GrCheckboxSelected />
       <span>My Bookings</span>
+      </NavLink>
+
+      <NavLink to="/users" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
+      <FaUsers />
+      <span>Users</span>
       </NavLink>
 
      
