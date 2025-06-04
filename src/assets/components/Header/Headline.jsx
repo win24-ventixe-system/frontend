@@ -10,6 +10,7 @@ const Headline = () => {
     if (location.pathname.startsWith('/events/booking/')) return `Book Event`
     if (location.pathname.startsWith('/events/')) return `Event Details`
     if (location.pathname === '/allbookings') return `My Bookings`
+    if (location.pathname === '/users') return `Users`
 
     return 'Page'
   }

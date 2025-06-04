@@ -1,7 +1,7 @@
 
-import EventTerms from '../components/main/EventTerms';
 import SeatPlan from '../components/main/SeatPlan';
 import EventDetailsCard from '../components/main/EventDetailsCard';
+import EventTerms from '../components/main/EventTerms'
 
 
 const EventDetailsPage = () => {
@@ -9,11 +9,10 @@ const EventDetailsPage = () => {
 
 
   return (   
-    <div className='grid-layout'>
+    <div className='event-details-layout'>
         <EventDetailsCard />
-        <SeatPlan />
-        <EventTerms />
-
+          <SeatPlan />
+          <EventTerms />
     </div>
     
   )

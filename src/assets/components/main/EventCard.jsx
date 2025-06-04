@@ -50,9 +50,7 @@ const EventCard = ({item }) => {
           </div>
         </Link>
         <div className='date-time'>
-            <span className='date'>May 20, 2019</span>
-            <span> - </span>
-            <span className='time'>6:00 PM</span>
+            <span className='date'>{item.eventDate}</span>
           </div>
             <Link to={`/events/${item.id}`}>
           <h3 className='event-title'>{item.title}</h3>
@@ -70,7 +68,8 @@ const EventCard = ({item }) => {
               <button className='btn btn-check-event'>Check Event</button>
               </Link>
                 <div className='event-price'>
-                  $<span>60</span>
+                    <p>Starts from</p>
+                    <span className="price-standard">$<span className='price'>60</span></span>
                 </div>
           
           </div>

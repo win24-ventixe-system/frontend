@@ -25,11 +25,18 @@ const EventDetailsCard = () => {
             getEvent()
         }, []) 
 
+    const lowestPrice = event.packages && event.packages.length > 0
+  ? event.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), event.packages[0].price)
+  : null; // gets the lowest price out of all the packages prices
+
   return (
     <div className='event-details card'>
         <div className='card-header'>
+            <div className='image-container'>
             <img className='event-details-image' src={EventImage} alt=""/>
-                <div className='event-tags'>
+            </div>
+            
+                {/*  <div className='event-tags'>
                     <div className="event-type-tag">
                         <span>Music</span>
                     </div>
@@ -37,56 +44,67 @@ const EventDetailsCard = () => {
                         <span className='dot'></span>
                         <span className='dot-red active'>Active</span>
                     </div>            
-            </div>
+            </div>   */}
         </div>
                
 
-        
-    
-        <div className="card-body">
+        <div className='card-bottom'>
+
+            <div className="card-body">
 
                 <h2 className='event-details-header'>{event.title}</h2>
         
 
-            <div className='event-details-info'>
+                <div className='event-details-info'>
                 <div className='date-time'>
                             <CiCalendar />
-                            <span className='date'>May 20, 2019</span>
-                            <span> - </span>
-                            <span className='time'>6:00 PM</span>
+                            <span className='date'>{event.eventDate}</span>
+                            <span className='time'></span>
                 </div>
                 <div className='event-location'>
                             <CiLocationOn />            
-                            <span className='StreetName'>Sunset Park,</span>
+                            <span className='StreetName'>{event.location},</span>
                             <span className='City'>Los Angeles,</span>
                             <span className='Country'>CA</span>
                 </div>
-                <div className='event-price'>
-                    <p>Starts from</p>
-                    <span className="price-standard">$<span className='price'>60</span></span>
-                </div>
+                {
+                    event.packages?.map((pkg) =>(
+
+                        <div key={pkg.id} className='event-price'>
+                        <p>Starts from</p>
+                
+                        <span className="price-standard">
+                            <span>{pkg.currency} {lowestPrice}</span>
+                        </span>
+                    </div>
+                        
+                    ))
+                }
+                
 
                 <div className='divider'></div>
                 <div className='event-details-about'>
-                    <h6>About Event</h6>
-                    <span className='event-description'>The Echo Beats Festival brings together a stellar lineup of artists 
-                        across EDM, pop, and hip-hop genres. Prepare to experience a night of electrifying music, 
-                        vibrant light shows, and unforgettable performances under the stars. 
-                        Explore food trucks, art installations, and VIP lounges for an elevated experience.</span>
+                    <h5>About Event</h5>
+                    <span className='event-description'>{event.description}.</span>
                 </div>
             </div>
-        <div className='card-footer'>
-            <Link to={`/events/booking/${id}`} className='btn btn-book-event'>Book Event</Link>
-            <Link to={"/events"} className='btn btn-back'>
-            <IoChevronBackCircleOutline />
-            Back to List
-        </Link>
+            </div>
+
+            <div className='card-footer'>
+                <Link to={`/events/booking/${id}`} className='btn btn-book-event'>Book Event</Link>
+                <Link to={"/events"} className='btn btn-back'>
+                <IoChevronBackCircleOutline />
+                Back to List
+                </Link>
+            </div>
+
         </div>
+    
+        
         
         
     </div> 
             
-    </div>
   )
 }
 

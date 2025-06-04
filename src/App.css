@@ -97,9 +97,12 @@
     --button-primary-hover-border-color:var(--primary-90);
     --button-primary-hover-background-color:var(--primary-90);
      /*BUTTON-SECONDARY*/
-    --button-secondary-text-color:var(--secondary-100);
+    --button-secondary-text-color:var(--cool-grey-10);
     --button-secondary-border-color:var(--cool-grey-10);
-    --button-secondary-background-color:var(--cool-grey-10);
+    --button-secondary-background-color:var(--secondary-70);
+    --button-secondary-hover-text-color:var(--cool-grey-10);
+    --button-secondary-hover-border-color:var(--cool-grey-10);
+    --button-secondary-hover-background-color:var(--secondary-60);
     /*BUTTON-OUTLINE*/
     --button-outline-text-color: var(--grey-90);
     --button-outline-border-color: var(--grey-30);
@@ -195,6 +198,29 @@
             border: var(--button-admin-hover-border-color);
         }
     }
+    .btn-remove-package {
+        background: var(--button-secondary-background-color);
+        color: var(--button-secondary-text-color);
+        border: var(--button-secondary-border-color);
+            &:hover {
+            color: var(--button-secondary-hover-text-color);
+            border: var(--button-secondary-hover-border-color);
+            background: var(--button-secondary-hover-background-color); 
+            }
+    }
+    .btn-add-package {
+        width: 40%;
+          background-color: var(--button-admin-background-color);
+        color: var(--button-admin-text-color);
+        border: var(--button-admin-border-color);
+        
+        &:hover {
+            background-color: var(--button-admin-hover-background-color);
+            color: var(--button-admin-hover-text-color);
+            border: var(--button-admin-hover-border-color);
+        }
+    }
+
     .btn-primary, 
     .btn-book-event {
         background-color: var(--button-primary-background-color);
@@ -639,6 +665,19 @@ color: var(--text-muted-color)
   align-items: center;
   justify-content: center;
   z-index: 999;
+   overflow-y: auto;
+
+   .card {
+  background: white;
+  border-radius: 1rem;
+  max-width: 700px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  margin: 2rem; /* to ensure some spacing on smaller screens */
+  max-height: 95vh;
+  overflow-y: auto;
+}
 
   .card-header {
     display: flex;
@@ -661,15 +700,14 @@ color: var(--text-muted-color)
   background: var(--background-color);
   border-radius: .8rem;
   padding: 2rem;
-  max-width: 500px;
+  min-width: 500px;
   width: 90%;
-}
-#add-user-modal,
-#edit-user-modal  {
-  max-height: 95vh; 
   overflow-y: auto;  
   scrollbar-width: none;
+  max-height: 99vh;
 }
+
+
 
 /* =========================
    FORM
@@ -719,14 +757,40 @@ color: var(--text-muted-color)
     color: var(--book-input-placeholder-color);
     font-size: .9rem;
 }
+.form-group-packages {
+    border: 1px solid #ccc;
+       border-radius: .8rem;
+     padding: .6rem; 
+     display: grid;
+     gap: .4rem;
+    
+     .package-group {
+    border: 1px solid #ccc;
+    border-radius: .8rem;
+     padding: .6rem; 
+    h4 {
+        margin-bottom: .4rem;
+    }     
+    .form-group-horizontal {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: .5rem;
+        justify-content: center;
+        align-items: center;
+    
+    }
+}
+}
 
 }
+select.form-input {
+        padding-bottom: .6rem;
+        font-size: .8rem;
+    }
 
 /* =========================
    IMAGE PREVIEW
 ========================= */
-
-
 
     .image-previewer {
     border: 2px dashed var(--border-color);
@@ -915,6 +979,10 @@ footer a:hover {
     color: var(--primary-100);
     font-weight: 600;
     }
+    p {
+        color: var(--extra-muted-color);
+        font-size: .7rem;
+    }
     }
    .admin-button {
     display: flex;
@@ -986,36 +1054,57 @@ footer a:hover {
    EVENT DETAILS PAGE
 ========================= */
 /*Event details*/
-.grid-layout {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas:"event seating-plan"
-                        "event terms";
-   justify-content: center;
+.event-details-layout{
+   display: grid;
+    grid-template-columns: .8fr  1fr;
+     grid-template-rows: 90vh ;
+    grid-template-areas: "event-details seating"
+                         "event-details terms";
    gap: 2rem;
 
+.seating-plan.card {
+  grid-area: seating;
+  height: 100%;
+  overflow-y: auto;
+}
 
-
+.terms.card {
+  grid-area: terms;
+  overflow-y: auto;
+}
     .event-details.card {
+    grid-area: event-details;
+    overflow: hidden;
     padding: 0;
-    grid-area: event;
     width: 720px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     border-radius: 1rem;
     position: relative;
 
-          .card-header {
+    .card-header {
             width:100%;
             border-radius: 1rem 1rem 0 0;
             position: relative;
             overflow: hidden;
             background-color: var(--main-background-color);
-            .event-details-image {
-                width:100%;
-             
+          
+           .image-container {
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+              .event-details-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                }
             }
+
+
 
             .event-tags {
                 display: flex;
@@ -1058,105 +1147,142 @@ footer a:hover {
                     color: var(--dot-yellow-text-color);
                 } 
             } 
-    }
-
-          }  
+      } 
             
+    }
+    .card-bottom {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 50%;
 
-    
-    .card-body{
-
-        bottom: 0;
+         .card-body{
         display: grid;
-        gap: 2rem;
-        padding-block: .5rem;
+        gap: 1rem;
+        padding-block: .6rem;
         padding-inline: 1rem;
 
         .event-details-header {
         display: flex;
          color: var(--text-color);
         font-weight: 700;
-        margin-top: 0;
+        margin-top: 0.5rem;
 
-        
-    }
+        }
     
-    .event-details-info {
+        .event-details-info {
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-areas: "date-time price"
                               "event-location price"
                               "divider divider"
                               "about about";
-    }
-    .date-time {
+        }
+        .date-time {
         grid-area: date-time;
         color: var(--extra-muted-color);
         font-size: .8rem;
         display: flex;
         align-items: center;
         gap: .3rem;
-    }
+        }   
   
     
-    .event-location {
-    grid-area: event-location;
-    display: flex;
-    align-items: center;
-    gap: .3rem;
-    color: var(--extra-muted-color);
-    font-size: .8rem;
-    }
-    .event-price {
-    grid-area: price;
-    color: var(--primary-100);
-    font-weight: 700;
-    display: flex;
-    flex-direction: column;
-    font-size: 1.2rem;
-    p {
+            .event-location {
+        grid-area: event-location;
+        display: flex;
+        align-items: center;
+        gap: .3rem;
         color: var(--extra-muted-color);
-        font-size: .7rem;
-    }
-    }
-    .event-details-about {
-        grid-area: about;
-        display: grid;
-        gap: 1rem;
+        font-size: .8rem;
+        }
+        .event-price {
+        grid-area: price;
+        color: var(--primary-100);
+        display: flex;
+        flex-direction: column;
+        font-size: 1.2rem;
+        p {
+            color: var(--extra-muted-color);
+            font-size: .7rem;
+        }
+        }
+        .event-details-about {
+            grid-area: about;
+            display: grid;
+            gap: 1rem;
 
-        .event-description {
-            font-size: 12px;
-            color: var(--grey-80);
+            .event-description {
+                font-size: .9rem;
+                color: var(--text-muted-color);
+            }
         }
     }
-    }
 
-.card-footer {
+    .card-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding-inline: 1rem;
+        
+            }
+    }
+}
+   
+    
+}
+
+/* =========================
+   BOOK EVENT PAGE
+========================= */
+
+.booking-layout {
     display: grid;
-    gap: 1rem;
-    margin-bottom: .5rem;
+    grid-template-columns: .8fr  1fr;
+     grid-template-rows: 90vh;
+    grid-template-areas: "event-book seating"
+                         "event-book terms";
+   gap: 2rem;
+
+#book-event-form {
+    grid-area: event-book;
+    overflow: hidden;
 }
+.seating-plan.card {
+  grid-area: seating;
+  height: 100%;
+  overflow-y: auto;
 }
+
+.terms.card {
+  grid-area: terms;
+  overflow-y: auto;
+}
+
+    }
 
   /*Seating plan*/
   .seating-plan.card {
-        grid-area: seating-plan;
+        grid-area: seating;
         display: flex;
         flex-direction: column;
-        
-        
-        h4 {
-            grid-area: title;
+        align-items: left;
+        .seating-plan-title {
             margin-bottom: 1.5rem;
         }
         
                 .seat-plan-distribution {
             display: flex;
-            align-items: center;
-            gap: 3rem;   
-            .event-image {
-                cursor: pointer;
-            } 
+            flex-direction: column;
+            height: 100%;
+            gap: 2rem;
+            .seat-plan-image {
+                display: flex;
+                justify-content: center;
+
+             
+            }  
+            
             
 
 .popup-overlay {
@@ -1182,11 +1308,53 @@ footer a:hover {
 }
 }
         .seat-plan-categories {
-            display: flex;
-            flex-direction: column;
-            gap: .5rem;
+             display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 0;
+            gap: 1rem;
+
+
+            .package-container {
+                background-color: var(--section-background-color);
+                padding: 1rem;
+                border-radius: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                gap: 2rem;
+                max-height: 100px;
+
+                .package-title {
+                    margin-bottom: .8rem;
+                }
+              
+                .package-location {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 2rem;
+                    font-size: .8rem;
+                    color: var(--text-muted-color);
+
+                    .package-location-item {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .event-price {
+                    grid-area: price;
+                    color: var(--primary-100);
+                    font-weight: 700;
+                }
+            }
+
         }
-    .ticket-category-benefits {
+
+
+  }
+      .ticket-category-benefits {
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -1196,7 +1364,6 @@ footer a:hover {
 
         .ticket-benefits-descriptions {
             display: flex;
-            flex-direction: column;
             gap: 1.5rem;
 
             .VIP-lounge.card,
@@ -1235,12 +1402,10 @@ footer a:hover {
 
     }
 
-  }
-
 /*terms and conditions*/
 .terms.card {
     grid-area: terms;
-    max-height: 350px;
+    max-height: 200px;
     overflow-y: auto;
     line-height: 2;
     h4 {
@@ -1276,7 +1441,7 @@ footer a:hover {
 }
   }
 
-}
+
 
 
 
@@ -1309,7 +1474,6 @@ footer a:hover {
 
 
 .form.card {
-    grid-area: event;
 
     .book-event-details {
             display: flex;
@@ -1318,6 +1482,7 @@ footer a:hover {
             align-items: center;
             margin-bottom: 1rem;
             box-shadow: var(--box-shadow2);
+            height: 100%;
          
          .image-container {
             height: 80px;
@@ -1325,6 +1490,12 @@ footer a:hover {
             overflow: hidden;
             border-radius: 1rem;
             background-color: var(--grey-30);
+            .event-image {
+                object-fit: cover;
+                  height: 80px;
+                    width: 100px;
+
+            }
          }
          .book-event-info {
             display: flex;
@@ -1342,7 +1513,6 @@ footer a:hover {
             }
              .event-price {
             grid-area: price;
-            font-weight: 700;
             display: flex;
             flex-direction: column;
             font-size: 1.2rem;

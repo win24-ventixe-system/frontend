@@ -8,7 +8,7 @@ const BookingEventPage = () => {
           
 
   return (
-      <div className='grid-layout'>
+      <div className='booking-layout'>
         <BookingEventForm />
         <SeatPlan />
         <EventTerms />

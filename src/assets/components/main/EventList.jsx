@@ -38,21 +38,7 @@ const EventList = () => {
                 <EventCard key={event.id} item={event} />
             ))
         }
-        {
-            events.map(event => (
-                <EventCard key={event.id} item={event} />
-            ))
-        }
-        {
-            events.map(event => (
-                <EventCard key={event.id} item={event} />
-            ))
-        }
-        {
-            events.map(event => (
-                <EventCard key={event.id} item={event} />
-            ))
-        }
+        
     </div>
     {isAddModalOpen && <AddEvent onClose={() => setAddModalOpen(false)} />}
 
