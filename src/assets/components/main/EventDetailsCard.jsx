@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { CiCalendar, CiLocationOn } from "react-icons/ci"
 import { IoChevronBackCircleOutline } from "react-icons/io5";
-import EventImage from '../../images/festival_EcoBeats.jpg'
+
 
 
 const EventDetailsCard = () => {
@@ -33,7 +33,7 @@ const EventDetailsCard = () => {
     <div className='event-details card'>
         <div className='card-header'>
             <div className='image-container'>
-            <img className='event-details-image' src={EventImage} alt=""/>
+            <img className='event-details-image' src="" alt="event-image"/>
             </div>
             
                 {/*  <div className='event-tags'>
@@ -64,8 +64,6 @@ const EventDetailsCard = () => {
                 <div className='event-location'>
                             <CiLocationOn />            
                             <span className='StreetName'>{event.location},</span>
-                            <span className='City'>Los Angeles,</span>
-                            <span className='Country'>CA</span>
                 </div>
                 {
                     event.packages?.map((pkg) =>(

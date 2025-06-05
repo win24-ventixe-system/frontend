@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CiLocationOn } from "react-icons/ci";
-import EventImage from '../../images/festival-3466251_1280.jpg'
 import EditEvent from '../modals/EditEvent'
 import { FaEllipsis } from "react-icons/fa6"
 import EventDropdown from '../dropdowns/EventDropdown'
@@ -24,7 +23,10 @@ const EventCard = ({item }) => {
      const handleCloseModal = () => {
     setModalOpen(false)
   }
-  
+  // lowest package price
+  const lowestPrice = item.packages && item.packages.length > 0
+    ? item.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), item.packages[0].price)
+    : null;
   return (
   
     <div className='event card'>
@@ -46,8 +48,7 @@ const EventCard = ({item }) => {
       <div className='card-body'> 
         <Link to={`/events/${item.id}`}>
           <div className='image-container'>
-              <img className='event-image' src={EventImage} alt="event image"/>
-          </div>
+            <img className='event-image' src="" alt="event image"/>          </div>
         </Link>
         <div className='date-time'>
             <span className='date'>{item.eventDate}</span>
@@ -57,9 +58,7 @@ const EventCard = ({item }) => {
           </Link>
           <div className='event-location'>
               <CiLocationOn />            
-              <span className='StreetName'>Sunset Park,</span>
-              <span className='City'>Los Angeles,</span>
-              <span className='Country'>CA</span>
+              <span className='StreetName'>{item.location}</span>
           </div>
       </div>
      
@@ -69,7 +68,7 @@ const EventCard = ({item }) => {
               </Link>
                 <div className='event-price'>
                     <p>Starts from</p>
-                    <span className="price-standard">$<span className='price'>60</span></span>
+                    <span className="price-standard">$<span className='price'>{lowestPrice}</span></span>
                 </div>
           
           </div>

@@ -1,90 +1,67 @@
-import React , { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
-import { IoCloseOutline } from "react-icons/io5"
-import { BsPencilSquare } from "react-icons/bs"
+import { useEventContext } from '../../contexts/EventContext'
+import { IoCloseOutline } from 'react-icons/io5'
+import { BsPencilSquare } from 'react-icons/bs'
+
+
 
 const AddEvent = ({ onClose }) => {
+    const navigate = useNavigate()
 
- const [formData, setFormData] = useState({
-    title: '',
-    date: '',
-    streetName: '',
-    postalCode: '',
-    city: '',
-    description: '',
-    packages: [
-        {
-            id: Date.now(),
-            title:'',
-            seatingArrangement: '',
-            placement: '',
-            price: '',
-            currency: '$'
-        }
-    ]
-  })
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({...prev, [name]: value }))
-  }
-const handlePackageChange = (index, e) => {
-    const { name, value } = e.target
-    setFormData(prev => {
-      const updatedPackages = [...prev.packages];
-      updatedPackages[index] = { ...updatedPackages[index], [name]: value }
-      return { ...prev, packages: updatedPackages }
-    })
-  }
-  const addPackage = () => {
-    setFormData(prev => ({
-      ...prev,
-      packages: [...prev.packages, { id: Date.now(), title: '', seatingArrangement: '', placement: '', price: '', currency: '$' }]
-    }))
-  }
-  const removePackage = (index) => {
-  setFormData(prev => {
-    const updatedPackages = [...prev.packages];
-    updatedPackages.splice(index, 1);
-    return { ...prev, packages: updatedPackages };
-  })
-}
+  const {
+    formData,
+    handleChange,
+    handlePackageChange,
+    handleImageChange,
+    addPackage,
+    removePackage,
+    formErrors,
+    validateForm
+  } = useEventContext()
 
+ 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { title, date, streetName, postalCode, city, description, packages } = formData;
-    const eventToSubmit = {
-    title,
-    description,
-    eventDate: new Date(date).toISOString(),
-    location: `${streetName}, ${postalCode}, ${city}`,
-    image: "", 
-    packages: packages.map(pkg => ({
-      title: pkg.title,
-      seatingArrangement: pkg.seatingArrangement,
-      placement: pkg.placement,
-      price: parseFloat(pkg.price),
-      currency: pkg.currency
-    }))
-  };
-    console.log('Submitting Event:', eventToSubmit)
+     //console.log("Submit triggered")
+       // Validate once and store result
+  //const isValid = validateForm();
+  //console.log("Form validation result:", isValid);
+  //if (!isValid) return; // stop if not valid
+
+   const data = {
+      image: "",        
+  title: formData.title,              
+  description: formData.description,   
+  eventDate: new Date(formData.date).toISOString(), 
+  location: formData.streetName + formData.postalCode + formData.city,
+  packages: formData.packages.map(pkg => ({
+    title: pkg.title,
+    seatingArrangement: pkg.seatingArrangement,
+    placement: pkg.placement,
+    price: parseFloat(pkg.price),   
+    currency: pkg.currency
+  }))
+  }
+ 
     try {
                 const res = await fetch (`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events`, 
                 {
                 method: 'POST',
                 headers: { 'Content-Type':'application/json'},
-                body: JSON.stringify(eventToSubmit)
+                body: JSON.stringify(data)
+            
                  })
                  if(!res.ok) {
                     console.error("Event creation failed")
                  } else {
                     console.log("Event created succesfully")
-                    navigate('/')
+                     navigate(`/`)
                  }
             } catch(err) {
                 console.error("Error submitting form", err)
             }
- onClose()
   }
 
 
@@ -98,33 +75,40 @@ const modalContent = (
     </div>
            <form className='modal-event-form' noValidate onSubmit={handleSubmit}>
             <div className="image-previewer square">
-                <img src=""  alt="" className="image-preview" />
                 <BsPencilSquare className='pencil-icon' />
-            {/*<input className="event-image" />*/}
+                <input type="file" className="event-image" accept="image/*" onChange={handleImageChange}/>
+                {formData.imagePreview ? (
+                <img src={formData.imagePreview} alt="Preview" className="image-preview" />) : null}   
             </div>
             <div className='form-group'>
                 <label className='form-label'>Title</label>
-                <input className="form-input" type="text" name="title" value={formData.title} onChange={handleChange} placeholder='First Name' required/>
+                <input className="form-input" type="text" name="title" value={formData.title} onChange={handleChange} placeholder='Title' required/>
+                {formErrors.title && <p className="form-error">{formErrors.title}</p>}
             </div>
             <div className='form-group'>
                 <label className='form-label'>Date</label>
-                <input className="form-input" type="date" name="date" value={formData.date} onChange={handleChange} placeholder='Last Name' required/>
+                <input className="form-input" type="date" name="date" value={formData.date} onChange={handleChange} placeholder='Date' required/>
+                {formErrors.date && <p className="form-error">{formErrors.date}</p>}
             </div>
             <div className='form-group'>
                 <label className='form-label'>Street Name</label>
                 <input className="form-input" type="text" name="streetName" value={formData.streetName} onChange={handleChange} placeholder='Street Name' required/>
+                {formErrors.streetName && <p className="form-error">{formErrors.streetName}</p>}
             </div>
             <div className='form-group'>
                 <label className='form-label'>Postal Code</label>
                 <input className="form-input" type="text" name="postalCode" value={formData.postalCode} onChange={handleChange} placeholder='Postal Code' required/>
+                {formErrors.postalCode && <p className="form-error">{formErrors.postalCode}</p>}
             </div>
             <div className='form-group'>
                 <label className='form-label'>City</label>
                 <input className="form-input" type="text"name="city" value={formData.city} onChange={handleChange}  placeholder='City' required/>
+                {formErrors.city && <p className="form-error">{formErrors.city}</p>}
             </div>
               <div className='form-group'>
                 <label className='form-label'>Description</label>
                 <input className="form-input" type="text" name="description" value={formData.description} onChange={handleChange}  placeholder='Description' required/>
+                {formErrors.description && <p className="form-error">{formErrors.description}</p>}
             </div>
             
             <div className='form-group-packages'>
@@ -229,6 +213,8 @@ const modalContent = (
                    <button type="button" className='btn btn-add-package' onClick={addPackage}>
                         Add Package
                     </button>
+
+                    {formErrors.packages && <p className="form-error">{formErrors.packages}</p>}
             </div>
              
             <div className="form-buttons">

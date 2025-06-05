@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { IoChevronBackCircleOutline } from "react-icons/io5"
 import { CiCalendar, CiLocationOn } from "react-icons/ci"
-import EventImage from '../../images/festival_EcoBeats.jpg'
 
 
 

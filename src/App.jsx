@@ -12,9 +12,11 @@ import BookingsListPage from './assets/pages/BookingsListPage'
 import UserPage from './assets/pages/UserPage'
 import SignUp from './assets/pages/SignUp'
 import SignIn from './assets/pages/SignIn'
+import { EventProvider } from './assets/contexts/EventContext'
 
 function App() {
   return (
+    <EventProvider>
     <Routes>
       <Route element={<CenterLayout />}>
           <Route path="/signin" element={<SignIn />} />
@@ -34,6 +36,8 @@ function App() {
 
       </Route>
     </Routes>
+    </EventProvider>
+
   )
 }
 
