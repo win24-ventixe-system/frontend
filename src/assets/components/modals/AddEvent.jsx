@@ -24,37 +24,58 @@ const AddEvent = ({ onClose }) => {
  
   const handleSubmit = async (e) => {
     e.preventDefault()
-     //console.log("Submit triggered")
-       // Validate once and store result
-  //const isValid = validateForm();
-  //console.log("Form validation result:", isValid);
-  //if (!isValid) return; // stop if not valid
+    console.log("handleSubmit triggered!");// ADD THIS LINE
+    console.log("Current formData(entire object):" , formData); // ADD THIS LINE 
+    console.log("formData.image: (from state)", formData.image);
 
-   const data = {
-      image: "",        
-  title: formData.title,              
-  description: formData.description,   
-  eventDate: new Date(formData.date).toISOString(), 
-  location: formData.streetName + formData.postalCode + formData.city,
-  packages: formData.packages.map(pkg => ({
-    title: pkg.title,
-    seatingArrangement: pkg.seatingArrangement,
-    placement: pkg.placement,
-    price: parseFloat(pkg.price),   
-    currency: pkg.currency
-  }))
-  }
+   const isValid = validateForm(); 
+        console.log("Form is valid:", isValid); 
+
+        if (!isValid) {
+            console.log("Form has validation errors. Preventing submission.");
+            // If the form is not valid, stop the submission process
+            return;
+        }
+// 1. Create a new FormData object
+        const formDataToSend = new FormData()
+// 2. Append simple text fields
+        formDataToSend.append('title', formData.title)
+        formDataToSend.append('description', formData.description)
+        formDataToSend.append('eventDate', new Date(formData.date).toISOString()); // Convert date to ISO string
+        formDataToSend.append('location', `${formData.streetName }, ${formData.postalCode }, ${formData.city}`)
+// 3. Append the image file if it exists
+        
+     if (formData.image) {
+        formDataToSend.append('image', formData.image);
+        console.log("Image appended to FormDataToSend."); // <--- THIS IS CRITICAL
+    } else {
+        console.log("No image found in formData.image, NOT appending to FormDataToSend."); // <--- THIS IS CRITICAL
+    }
+  // 4. Append package data
+  formData.packages.forEach((pkg, index) => {
+            formDataToSend.append(`packages[${index}].title`, pkg.title);
+            formDataToSend.append(`packages[${index}].seatingArrangement`, pkg.seatingArrangement);
+            formDataToSend.append(`packages[${index}].placement`, pkg.placement);
+            formDataToSend.append(`packages[${index}].price`, pkg.price); 
+            formDataToSend.append(`packages[${index}].currency`, pkg.currency);
+        })
+    
+
+
  
     try {
                 const res = await fetch (`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events`, 
                 {
                 method: 'POST',
-                headers: { 'Content-Type':'application/json'},
-                body: JSON.stringify(data)
+                //headers: { 'Content-Type':'multipart/form-data'},
+                //body: JSON.stringify(data)
+                body: formDataToSend
             
                  })
                  if(!res.ok) {
                     console.error("Event creation failed")
+                    const errorData = await res.text()
+                    console.error("Error details:", errorData);
                  } else {
                     console.log("Event created succesfully")
                      navigate(`/`)
@@ -75,10 +96,10 @@ const modalContent = (
     </div>
            <form className='modal-event-form' noValidate onSubmit={handleSubmit}>
             <div className="image-previewer square">
+                  {formData.imagePreview ? (
+                <img src={formData.imagePreview} alt="Preview" className="image-preview" />) : null} 
                 <BsPencilSquare className='pencil-icon' />
                 <input type="file" className="event-image" accept="image/*" onChange={handleImageChange}/>
-                {formData.imagePreview ? (
-                <img src={formData.imagePreview} alt="Preview" className="image-preview" />) : null}   
             </div>
             <div className='form-group'>
                 <label className='form-label'>Title</label>

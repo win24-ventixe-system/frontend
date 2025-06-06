@@ -29,11 +29,14 @@ const EventDetailsCard = () => {
   ? event.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), event.packages[0].price)
   : null; // gets the lowest price out of all the packages prices
 
+   // --- Date Formatting Logic (MOVED HERE) ---
+    const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : ''
+
   return (
     <div className='event-details card'>
         <div className='card-header'>
             <div className='image-container'>
-            <img className='event-details-image' src="" alt="event-image"/>
+            <img className='event-details-image' src={event.image}  alt="event-image"/>
             </div>
             
                 {/*  <div className='event-tags'>
@@ -58,8 +61,8 @@ const EventDetailsCard = () => {
                 <div className='event-details-info'>
                 <div className='date-time'>
                             <CiCalendar />
-                            <span className='date'>{event.eventDate}</span>
-                            <span className='time'></span>
+                            <span className='date'>{formattedDate}</span>
+                            
                 </div>
                 <div className='event-location'>
                             <CiLocationOn />            
@@ -90,6 +93,7 @@ const EventDetailsCard = () => {
 
             <div className='card-footer'>
                 <Link to={`/events/booking/${id}`} className='btn btn-book-event'>Book Event</Link>
+                
                 <Link to={"/events"} className='btn btn-back'>
                 <IoChevronBackCircleOutline />
                 Back to List

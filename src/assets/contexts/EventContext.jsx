@@ -42,7 +42,7 @@ const [formErrors, setFormErrors] = useState({})
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-        setFormData(prev => ({ ...prev, imageFile: file }))
+        setFormData(prev => ({ ...prev, image: file }))
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData(prev => ({
@@ -51,7 +51,15 @@ const [formErrors, setFormErrors] = useState({})
           imagePreview: reader.result,
         }))
       }
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file)
+    }
+    else {
+        // If file is cleared, set image and imagePreview back to null/empty
+        setFormData(prev => ({
+            ...prev,
+            image: null,
+            imagePreview: ''
+        }));
     }
   }
 
@@ -73,7 +81,7 @@ const [formErrors, setFormErrors] = useState({})
     })
   }
 const validateForm = () => {
-    const errors = {};
+    const errors = {}
     const { title, date, streetName, postalCode, city, description, packages } = formData;
 
     if (!title.trim()) errors.title = 'Title is required'

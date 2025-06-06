@@ -64,21 +64,24 @@ const BookingEventForm = () => {
   ? event.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), event.packages[0].price)
   : null;
        
-  return (
+    // --- Date Formatting Logic 
+    const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : '';
+
+    return (
     <div className='form card' id="book-event-form">
     <div className='card-header'>
         <div className='book-event-details card'>
             
             <div className='image-container'>
                 
-                <img className='event-image' src={EventImage} alt={event.title} />
+                <img className='event-image' src={event.image} alt={event.title} />
                 </div>
             
             <div className='book-event-info'>
                 <div className='book-event-title'>
                     <h4>{event.title}</h4>
                  
-                    <span className='date-time'><CiCalendar /> {event.eventDate}</span>
+                    <span className='date-time'><CiCalendar /> {formattedDate}</span>
                     <span className="place"> <CiLocationOn /> {event.location} </span>
                 </div>
                 
