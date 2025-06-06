@@ -73,7 +73,6 @@ const BookingEventForm = () => {
         <div className='book-event-details card'>
             
             <div className='image-container'>
-                
                 <img className='event-image' src={event.image} alt={event.title} />
                 </div>
             

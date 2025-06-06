@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import { Link } from 'react-router-dom'
 import { CiLocationOn } from "react-icons/ci";
 import EditEvent from '../modals/EditEvent'
@@ -9,6 +9,8 @@ import EventDropdown from '../dropdowns/EventDropdown'
 const EventCard = ({item }) => {
     const [isDropdownOpen, setDropdownOpen] = useState(false)
     const [isModalOpen, setModalOpen] = useState(false)
+
+
 
     const toggleDropdown = (e) => {
       e.stopPropagation() // to handle the current click event and not others on the site 
@@ -31,6 +33,7 @@ const EventCard = ({item }) => {
 
     // --- Date Formatting Logic for YYYY-MM-DD ---
   const formattedDate = item.eventDate ? item.eventDate.substring(0, 10) : ''
+
 
   return (
   

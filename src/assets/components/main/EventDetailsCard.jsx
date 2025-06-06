@@ -66,7 +66,7 @@ const EventDetailsCard = () => {
                 </div>
                 <div className='event-location'>
                             <CiLocationOn />            
-                            <span className='StreetName'>{event.location},</span>
+                            <span className='StreetName'>{event.location}</span>
                 </div>
                 {
                     event.packages?.map((pkg) =>(
@@ -93,7 +93,7 @@ const EventDetailsCard = () => {
 
             <div className='card-footer'>
                 <Link to={`/events/booking/${id}`} className='btn btn-book-event'>Book Event</Link>
-                
+
                 <Link to={"/events"} className='btn btn-back'>
                 <IoChevronBackCircleOutline />
                 Back to List

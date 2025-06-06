@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import VenueImage from '../../images/Venue_Map.svg'
-import TicketBenefits from './TicketBenefits'
 import Packages from './Packages'
 
 const SeatPlan = () => {
