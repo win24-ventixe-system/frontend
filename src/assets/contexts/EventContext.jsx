@@ -2,28 +2,38 @@ import React, { createContext, useContext, useState } from 'react';
 
 export const EventContext = createContext();
 
+const initialFormData = {
+  title: '',
+  date: '',
+  streetName: '',
+  postalCode: '',
+  city: '',
+  description: '',
+  image: null,
+  imagePreview: '',
+  packages: [
+    {
+      id: Date.now(), // Use Date.now() or a unique ID generator for initial package
+      title: '',
+      seatingArrangement: '',
+      placement: '',
+      price: '',
+      currency: '$', // Changed to '$' as per your original code
+    },
+  ],
+}
 export const EventProvider = ({ children }) => {
-  const [formData, setFormData] = useState({
-    title: '',
-    date: '',
-    streetName: '',
-    postalCode: '',
-    city: '',
-    description: '',
-    image: null,
-    imagePreview: '',
-    packages: [
-      {
-        id: Date.now(),
-        title: '',
-        seatingArrangement: '',
-        placement: '',
-        price: '',
-        currency: '$',
-      },
-    ],
-  })
-const [formErrors, setFormErrors] = useState({})
+  const [formData, setFormData] = useState(initialFormData)
+
+  const [formErrors, setFormErrors] = useState({})
+
+
+     // Function to reset form data to its initial state
+  const resetFormData = () => {
+    setFormData(initialFormData);
+    setFormErrors({}); // Also clear any previous errors when resetting
+
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -38,6 +48,7 @@ const [formErrors, setFormErrors] = useState({})
       updatedPackages[index] = { ...updatedPackages[index], [name]: value };
       return { ...prev, packages: updatedPackages };
     })
+    setFormErrors(prev => ({ ...prev, packages: undefined }))
   }
 
   const handleImageChange = (e) => {
@@ -61,6 +72,7 @@ const [formErrors, setFormErrors] = useState({})
             imagePreview: ''
         }));
     }
+    setFormErrors(prev => ({ ...prev, image: undefined }))
   }
 
   const addPackage = () => {
@@ -71,6 +83,7 @@ const [formErrors, setFormErrors] = useState({})
         { id: Date.now(), title: '', seatingArrangement: '', placement: '', price: '', currency: '$' },
       ],
     }))
+    setFormErrors(prev => ({ ...prev, packages: undefined }))
   }
 
   const removePackage = (index) => {
@@ -79,6 +92,7 @@ const [formErrors, setFormErrors] = useState({})
       updatedPackages.splice(index, 1);
       return { ...prev, packages: updatedPackages };
     })
+    setFormErrors(prev => ({ ...prev, packages: undefined }))
   }
 const validateForm = () => {
     const errors = {}
@@ -110,6 +124,10 @@ const validateForm = () => {
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
+
+    
+
+    
   }
   return (
     <EventContext.Provider
@@ -124,6 +142,7 @@ const validateForm = () => {
         formErrors,
         setFormErrors,
         validateForm,
+        resetFormData,
       }}
     >
       {children}

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
+import { useEffect } from 'react'
 import { useEventContext } from '../../contexts/EventContext'
 import { IoCloseOutline } from 'react-icons/io5'
 import { BsPencilSquare } from 'react-icons/bs'
@@ -18,15 +19,23 @@ const AddEvent = ({ onClose }) => {
     addPackage,
     removePackage,
     formErrors,
-    validateForm
+    validateForm,
+    resetFormData,
   } = useEventContext()
 
- 
+  // Call resetFormData when the modal opens
+  useEffect(() => {
+    resetFormData();
+  }, [])
+
+  const handleCloseAndReset = () => {
+    resetFormData() // Reset form data
+    onClose() // Close the modal
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("handleSubmit triggered!");// ADD THIS LINE
-    console.log("Current formData(entire object):" , formData); // ADD THIS LINE 
-    console.log("formData.image: (from state)", formData.image);
+   
 
    const isValid = validateForm(); 
         console.log("Form is valid:", isValid); 
@@ -78,7 +87,9 @@ const AddEvent = ({ onClose }) => {
                     console.error("Error details:", errorData);
                  } else {
                     console.log("Event created succesfully")
+                    resetFormData()
                      navigate(`/`)
+                     onClose()
                  }
             } catch(err) {
                 console.error("Error submitting form", err)
@@ -88,11 +99,11 @@ const AddEvent = ({ onClose }) => {
 
 
 const modalContent = (
-    <div className="modal" onClick={onClose}>
+    <div className="modal" onClick={handleCloseAndReset}>
          <div className='modal-event card' id='add-event-modal'  onClick={(e) => e.stopPropagation()}>
         <div className="card-header">
         <h2>Add Event</h2>
-        <IoCloseOutline onClick={onClose} className="close-icon"/>
+        <IoCloseOutline onClick={handleCloseAndReset} className="close-icon"/>
     </div>
            <form className='modal-event-form' noValidate onSubmit={handleSubmit}>
             <div className="image-previewer square">
