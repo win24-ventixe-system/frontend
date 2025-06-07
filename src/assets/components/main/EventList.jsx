@@ -10,11 +10,12 @@ const EventList = () => {
 
 
     const getEvents = async() => {
-        const res = await fetch("https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events")
+        const res = await fetch("https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events")
 
         if(res.ok) {
             const response = await res.json()
-            setEvents(response.result || [])
+            console.log("API Response:", response)
+            setEvents(Array.isArray(response.result?.$values) ? response.result.$values : [])
         }
     setLoading(false)
     }
@@ -34,9 +35,13 @@ const EventList = () => {
         </div>
     <div className='event-list'>
         {
-            events.map(event => (
-                <EventCard key={event.id} item={event} />
-            ))
+            events.length > 0 ? (
+                        events.map(event => (
+                            <EventCard key={event.id} item={event} />
+                        ))
+                    ) : (
+                        <p>No events found.</p> 
+                    )
         }
         
     </div>

@@ -64,7 +64,7 @@ const AddEvent = ({ onClose }) => {
 
  
     try {
-                const res = await fetch (`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events`, 
+                const res = await fetch (`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events`, 
                 {
                 method: 'POST',
                 //headers: { 'Content-Type':'multipart/form-data'},
@@ -141,6 +141,7 @@ const modalContent = (
 
                 <div className='form-group-horizontal'>
                 <div className='form-group'>
+                    
                     <label className='form-label'>Title</label>
                     <select 
                         className="form-input"

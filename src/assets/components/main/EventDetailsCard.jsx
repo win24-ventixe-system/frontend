@@ -13,10 +13,11 @@ const EventDetailsCard = () => {
         const [event, setEvent] = useState({})
     
         const getEvent = async() => {
-        const res = await fetch(`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events/${id}`)
+        const res = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${id}`)
     
             if(res.ok) {
                 const response = await res.json()
+                console.log("Event Response:", response);
                 setEvent(response.result)
             }
         }
@@ -25,9 +26,11 @@ const EventDetailsCard = () => {
             getEvent()
         }, []) 
 
-    const lowestPrice = event.packages && event.packages.length > 0
-  ? event.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), event.packages[0].price)
-  : null; // gets the lowest price out of all the packages prices
+    const packages = event.packages?.$values || []
+  // lowest package price
+const lowestPrice = packages.length > 0
+  ? Math.min(...packages.map(pkg => Number(pkg.price)))
+  : null;
 
    // --- Date Formatting Logic (MOVED HERE) ---
     const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : ''
@@ -69,17 +72,14 @@ const EventDetailsCard = () => {
                             <span className='StreetName'>{event.location}</span>
                 </div>
                 {
-                    event.packages?.map((pkg) =>(
-
-                        <div key={pkg.id} className='event-price'>
-                        <p>Starts from</p>
-                
-                        <span className="price-standard">
-                            <span>{pkg.currency} {lowestPrice}</span>
-                        </span>
+                    packages.map((pkg) => (
+                    <div key={pkg.id} className='event-price'>
+                    <p>Starts from</p>
+                    <span className="price-standard">
+                        <span>{pkg.currency}{lowestPrice}</span>
+                    </span>
                     </div>
-                        
-                    ))
+        ))
                 }
                 
 

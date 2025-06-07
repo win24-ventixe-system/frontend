@@ -26,10 +26,11 @@ const EventCard = ({item }) => {
      const handleCloseModal = () => {
     setModalOpen(false)
   }
+  const packages = item.packages?.$values || []
   // lowest package price
-  const lowestPrice = item.packages && item.packages.length > 0
-    ? item.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), item.packages[0].price)
-    : null;
+const lowestPrice = packages.length > 0
+  ? Math.min(...packages.map(pkg => Number(pkg.price)))
+  : null;
 
     // --- Date Formatting Logic for YYYY-MM-DD ---
   const formattedDate = item.eventDate ? item.eventDate.substring(0, 10) : ''
@@ -45,7 +46,7 @@ const EventCard = ({item }) => {
         </div>
 
         {isDropdownOpen && (<EventDropdown  onDropdownActionClick={handleDropdownActionClick}/> )}
-        {isModalOpen && <EditEvent onClose={handleCloseModal} />}
+        {isModalOpen && <EditEvent item={item} onClose={handleCloseModal} />}
 
       </div>
 

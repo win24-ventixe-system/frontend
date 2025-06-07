@@ -26,8 +26,9 @@ export const EventProvider = ({ children }) => {
 const [formErrors, setFormErrors] = useState({})
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormErrors(prev => ({ ...prev, [name]: undefined }))
   }
 
   const handlePackageChange = (index, e) => {
@@ -47,7 +48,6 @@ const [formErrors, setFormErrors] = useState({})
       reader.onloadend = () => {
         setFormData(prev => ({
           ...prev,
-          //image: file,
           imagePreview: reader.result,
         }))
       }

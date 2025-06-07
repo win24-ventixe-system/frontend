@@ -7,7 +7,7 @@ const Packages = () => {
             const [event, setEvent] = useState({})
         
             const getEvent = async() => {
-            const res = await fetch(`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events/${id}`)
+            const res = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${id}`)
         
                 if(res.ok) {
                     const response = await res.json()
@@ -18,10 +18,10 @@ const Packages = () => {
             useEffect(() => {
                 getEvent()
             }, []) 
-    
+    const packages = event.packages?.$values || [];
   return (
     <>
-{event.packages
+{packages
       ?.slice() 
       .sort((a, b) => a.price - b.price) // sort by price ascending
       .map((pkg) => (
@@ -45,7 +45,7 @@ const Packages = () => {
     
     </div>
        <div className='event-price'>
-        <span> {pkg.currency} {pkg.price}</span>
+        <span> {pkg.currency}{pkg.price}</span>
       </div>
   </div>
 ))}

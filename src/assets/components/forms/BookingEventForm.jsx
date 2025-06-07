@@ -8,7 +8,8 @@ import { CiCalendar, CiLocationOn } from "react-icons/ci"
 const BookingEventForm = () => {
   const navigate = useNavigate()
   const {id} = useParams()
-  const [event, setEvent] = useState({})
+  const [event, setEvent] = useState(null)
+   const [loadingEvent, setLoadingEvent] = useState(true);
   const [formData, setFormData] = useState ({
     eventId: id, 
     firstName: '', 
@@ -17,27 +18,35 @@ const BookingEventForm = () => {
     streetName: '', 
     postalCode:'', 
     city: '',
+    selectedPackageId: '',
     ticketQuantity: 1
     })
     
         const getEvent = async() => {
-        const res = await fetch(`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events/${id}`)
+        const res = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${id}`)
     
             if(res.ok) {
                 const response = await res.json()
                 setEvent(response.result)
+                setLoadingEvent(false)
             }
         }
     
         useEffect(() => {
             getEvent()
-        }, []) 
+        }, [id]) 
 
-  
+        if (loadingEvent || !event) {
+        return <div>Loading event details...</div>;
+        }
 
         const handleChange = (e) => {
             const {name, value } = e.target
-            setFormData(prev => ({...prev, [name]: value }))
+            // Convert ticketQuantity to a number if the name matches
+            const newValue = name === "ticketQuantity" ? parseInt(value) : value;
+            setFormData(prev => ({...prev, 
+                [name]: value
+            }))
         }
           
           const handleSubmit = async (e) => {
@@ -60,15 +69,19 @@ const BookingEventForm = () => {
             }
 
           }
-  const lowestPrice = event.packages && event.packages.length > 0
-  ? event.packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), event.packages[0].price)
-  : null;
+          const packages = event.packages?.$values || []
+          const selectedPackage = packages.find(pkg => pkg.id === formData.selectedPackageId)
+            const totalPrice = selectedPackage ? parseFloat(selectedPackage.price) * formData.ticketQuantity : 0
+            const lowestPrice = packages && packages.length > 0
+            ? packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), packages[0].price)
+            : null;
        
-    // --- Date Formatting Logic 
-    const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : '';
+            // --- Date Formatting Logic 
+            const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : '';
+            
 
     return (
-    <div className='form card' id="book-event-form">
+<div className='form card' id="book-event-form">
     <div className='card-header'>
         <div className='book-event-details card'>
             
@@ -88,14 +101,14 @@ const BookingEventForm = () => {
                 <div className='event-price'>
                     <p>Starts from</p>
                     <span className="price-standard">
-                        {event.packages?.[0]?.currency} {lowestPrice}
+                        ${event.packages?.[0]?.currency}{lowestPrice}
                     </span>
                 </div>
                 
         </div>
 
             
-        </div>
+    </div>
          <div className='card-body'>
         <form className='book-event-form' noValidate onSubmit={handleSubmit}>
             <div className='form-group'>
@@ -127,31 +140,24 @@ const BookingEventForm = () => {
                
                 <div className='form-group'>
                 <label className='form-label'>Packages</label>
-                <select
-                    className="form-input"
-                    name="packages"
-                    value={formData.packages}
-                    onChange={handleChange}
-                    required
-                >
+                <select className="form-input" name="selectedPackageId" value={formData.packages} onChange={handleChange} required>
                     <option value="">Select a Package</option>
-                    <option value="General Admission">General Admission</option>
-                    <option value="Silver">Silver</option>
-                    <option value="Gold">Gold</option>
-                    <option value="Platinum">Platinum</option>
-                    <option value="Diamond">Diamond</option>
-                    <option value="VIP Lounge">VIP Lounge</option>
-                    <option value="Artists Meet-and-Greet">Artists Meet-and-Greet</option>
-                    <option value="Ultimate Access">Ultimate Access</option>
+                    {packages.map(pkg => (
+                    <option key={pkg.id} value={pkg.id.toString()}>
+                        {pkg.title} - {pkg.currency}{pkg.price}
+                    </option>
+                ))}
                 </select>
                 </div>
+                
+
             <div className='form-group'>
                 <label className='form-label'>Tickets</label>
                 <input className="form-input" type="number" name="ticketQuantity" min="1" value={formData.ticketQuantity} onChange={handleChange} />
             </div>
               <div className='form-group'>
                     <label className='form-label'>Total</label>
-                    <input className="form-input" type="number" name="total" value={formData.packages} onChange={handleChange}  placeholder='$0' required/>
+                    <input className="form-input" type="text" name="totalDisplay" value={selectedPackage ? `${selectedPackage.currency}${totalPrice.toFixed(2)}` : '$0.00'} readOnly />
             </div>
             <div className="form-buttons">
                 <button type="submit" className='btn btn-submit-booking'>Book Now</button>
