@@ -1,57 +1,54 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback, useContext  } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { IoChevronBackCircleOutline } from "react-icons/io5"
 import { CiCalendar, CiLocationOn } from "react-icons/ci"
+import { BookingContext } from '../../contexts/BookingContext'
 
 
 
 const BookingEventForm = () => {
   const navigate = useNavigate()
   const {id} = useParams()
-  const [event, setEvent] = useState(null)
-   const [loadingEvent, setLoadingEvent] = useState(true);
-  const [formData, setFormData] = useState ({
-    eventId: id, 
-    firstName: '', 
-    lastName: '', 
-    email: '', 
-    streetName: '', 
-    postalCode:'', 
-    city: '',
-    selectedPackageId: '',
-    ticketQuantity: 1
-    })
-    
-        const getEvent = async() => {
-        const res = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${id}`)
+    const {
+        formData,
+        formErrors,
+        handleChange,
+        validateForm,
+        resetFormData 
+    } = useContext(BookingContext)
+
+    const [event, setEvent] = useState({})
+ 
+  
+     // Fetch Event Details 
+        const getEvent = useCallback (async() => {
+            try {
+                 const res = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${id}`)
     
             if(res.ok) {
                 const response = await res.json()
                 setEvent(response.result)
-                setLoadingEvent(false)
+                resetFormData(response.result.id, response.result.packages?.$values?.[0]?.id || '')
+                }
+                
             }
-        }
+            catch (error) {
+            console.error("Error fetching event:", error);
+            }
+        }, [id, resetFormData] )
+       
     
         useEffect(() => {
             getEvent()
-        }, [id]) 
+        }, [getEvent]) 
 
-        if (loadingEvent || !event) {
-        return <div>Loading event details...</div>;
-        }
+        
 
-        const handleChange = (e) => {
-            const {name, value } = e.target
-            // Convert ticketQuantity to a number if the name matches
-            const newValue = name === "ticketQuantity" ? parseInt(value) : value;
-            setFormData(prev => ({...prev, 
-                [name]: value
-            }))
-        }
-          
           const handleSubmit = async (e) => {
             e.preventDefault()
-
+                if (!validateForm()) {
+                    return; // Don't submit if validation fails
+                    }
              try {
                 const res = await fetch (`https://bookingservice-g4gtc7akfwg4gsfm.swedencentral-01.azurewebsites.net/api/Bookings`, {
                 method: 'POST',
@@ -59,25 +56,42 @@ const BookingEventForm = () => {
                 body: JSON.stringify(formData)
                  })
                  if(!res.ok) {
-                    console.error("Booking failed")
+                    const errorData = await res.text()
+                    console.error("Booking failed:", res.status, errorData)
                  } else {
                     console.log("Booking succesful")
-                    navigate('/')
-                 }
-            } catch(err) {
+                    const bookingResponse = await res.json()
+                   
+                   
+                    // Prepare data to pass to the confirmation page
+                    const bookingDetailsToConfirm = {
+                    ...bookingFormData, // All basic form data
+                    title: eventDetails.title, // Event title from eventDetails prop
+                    eventDate: eventDetails.eventDate, // Event date from eventDetails prop
+                    location: eventDetails.location, // Event location from eventDetails prop
+                    selectedPackage: selectedPackage, // Full selected package object
+                    totalPrice: totalPrice,
+                    bookingReference: bookingResponse.bookingReference || 'N/A' // Use actual booking reference
+                }
+                     
+                resetFormData(event.id, event.packages?.$values?.[0]?.id || '')
+        
+                 navigate('/confirmation', { state: { bookingDetails: bookingDetailsToConfirm } })
+            } 
+        } catch(err) {
                 console.error("Error submitting booking", err)
             }
-
           }
-          const packages = event.packages?.$values || []
-          const selectedPackage = packages.find(pkg => pkg.id === formData.selectedPackageId)
-            const totalPrice = selectedPackage ? parseFloat(selectedPackage.price) * formData.ticketQuantity : 0
-            const lowestPrice = packages && packages.length > 0
-            ? packages.reduce((min, pkg) => (pkg.price < min ? pkg.price : min), packages[0].price)
-            : null;
-       
-            // --- Date Formatting Logic 
-            const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : '';
+          // Get current selected package and total price
+                    const packages = event.packages?.$values || []
+                    const selectedPackage = packages.find(pkg => pkg.id === formData.selectedPackageId)
+                    const totalPrice = selectedPackage ? parseFloat(selectedPackage.price) * formData.ticketQuantity : 0
+                     // Lowest Price display 
+                    const lowestPrice = packages.length > 0
+                    ? Math.min(...packages.map(pkg => Number(pkg.price)))
+                    : null
+                    // Date Formatting  
+                    const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : ''
             
 
     return (
@@ -115,32 +129,43 @@ const BookingEventForm = () => {
             
                 <label className='form-label'>First Name</label>
                 <input className="form-input" type="text"name="firstName" value={formData.firstName} onChange={handleChange} placeholder='First Name' required/>
+                {formErrors.firstName && <p className="form-error">{formErrors.firstName}</p>}
             </div>
             <div className='form-group'>
                 <label className='form-label'>Last Name</label>
                 <input className="form-input" type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder='Last Name' required/>
+                {formErrors.lastName && <p className="form-error">{formErrors.lastName}</p>}
+
             </div>
             <div className='form-group'>
                 <label className='form-label'>E-mail</label>
                 <input className="form-input" type="email" name="email" value={formData.email} onChange={handleChange} placeholder='Email' required/>
+                {formErrors.email && <p className="form-error">{formErrors.email}</p>}
+
             </div>
             <div className='form-group'>
                 <label className='form-label'>Street Name</label>
                 <input className="form-input" type="text" name="streetName" value={formData.streetName} onChange={handleChange} placeholder='Street Name' required/>
+                {formErrors.streetName && <p className="form-error">{formErrors.streetName}</p>}
+
             </div>
             <div className='form-group'>
                 <label className='form-label'>Postal Code</label>
                 <input className="form-input" type="text" name="postalCode" value={formData.postalCode} onChange={handleChange} placeholder='Postal Code' required/>
+                {formErrors.postalCode && <p className="form-error">{formErrors.postalCode}</p>}
+
             </div>
             <div className='form-group'>
                 <label className='form-label'>City</label>
                 <input className="form-input" type="text"name="city" value={formData.city} onChange={handleChange}  placeholder='City' required/>
+                {formErrors.city && <p className="form-error">{formErrors.city}</p>}
+
             </div>
                 
                
                 <div className='form-group'>
                 <label className='form-label'>Packages</label>
-                <select className="form-input" name="selectedPackageId" value={formData.packages} onChange={handleChange} required>
+                <select className="form-input" name="selectedPackageId" value={formData.selectedPackageId} onChange={handleChange} required>
                     <option value="">Select a Package</option>
                     {packages.map(pkg => (
                     <option key={pkg.id} value={pkg.id.toString()}>
@@ -148,12 +173,15 @@ const BookingEventForm = () => {
                     </option>
                 ))}
                 </select>
+                {formErrors.selectedPackageId && <p className="form-error">{formErrors.selectedPackageId}</p>}
+
                 </div>
                 
 
             <div className='form-group'>
                 <label className='form-label'>Tickets</label>
                 <input className="form-input" type="number" name="ticketQuantity" min="1" value={formData.ticketQuantity} onChange={handleChange} />
+                {formErrors.ticketQuantity && <p className="form-error">{formErrors.ticketQuantity}</p>}
             </div>
               <div className='form-group'>
                     <label className='form-label'>Total</label>

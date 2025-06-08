@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 
-export const EventContext = createContext();
+export const EventContext = createContext()
 
-const initialFormData = {
+
+export const EventProvider = ({ children }) => {
+  const initialFormData = {
   title: '',
   date: '',
   streetName: '',
@@ -22,10 +24,8 @@ const initialFormData = {
     },
   ],
 }
-export const EventProvider = ({ children }) => {
-  const [formData, setFormData] = useState(initialFormData)
-
-  const [formErrors, setFormErrors] = useState({})
+const [formData, setFormData] = useState(initialFormData)
+const [formErrors, setFormErrors] = useState({})
 
 
      // Function to reset form data to its initial state
@@ -124,10 +124,7 @@ const validateForm = () => {
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
-
-    
-
-    
+ 
   }
   return (
     <EventContext.Provider
@@ -143,8 +140,7 @@ const validateForm = () => {
         setFormErrors,
         validateForm,
         resetFormData,
-      }}
-    >
+      }}>
       {children}
     </EventContext.Provider>
   )

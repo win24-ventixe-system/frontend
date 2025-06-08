@@ -9,15 +9,18 @@ import EventPage from './assets/pages/EventPage'
 import EventDetailsPage from './assets/pages/EventDetailsPage'
 import BookingEventPage from './assets/pages/BookingEventPage'
 import BookingsListPage from './assets/pages/BookingsListPage'
+import ConfirmationPage from './assets/components/confirmations/BookingConfirmation'
 import UserPage from './assets/pages/UserPage'
 import SignUp from './assets/pages/SignUp'
 import SignIn from './assets/pages/SignIn'
 import { EventProvider } from './assets/contexts/EventContext'
+import { BookingProvider } from './assets/contexts/BookingContext'
 
 function App() {
   return (
     <EventProvider>
-    <Routes>
+      <BookingProvider>
+        <Routes>
       <Route element={<CenterLayout />}>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
@@ -31,11 +34,14 @@ function App() {
         <Route path="/events/:id" element={<EventDetailsPage />} />
         <Route path="/allbookings" element={<BookingsListPage />} />
         <Route path="/events/booking/:id" element={<BookingEventPage />} />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path='/users' element={<UserPage/>} />
 
 
       </Route>
-    </Routes>
+        </Routes>
+      </BookingProvider>
+    
     </EventProvider>
 
   )
