@@ -1,38 +1,45 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const AllBookingsListItem = ({event}) => {
-    
+const AllBookingsListItem = ({booking}) => {
+      if (!booking) return null;
+
+
+   const {
+  eventTitle = 'Untitled Event',
+  eventDate,
+  totalPrice,
+  ticketQuantity,
+  eventId,
+  eventLocation = 'Unknown Location'
+} = booking;
+
+  const formattedDate = eventDate
+    ? new Date(eventDate).toLocaleDateString()
+    : 'Date not provided';
+
+  const perTicketPrice = ticketQuantity && totalPrice
+    ? (totalPrice / ticketQuantity).toFixed(2)
+    : 'N/A';
+
+  const totalDisplay = totalPrice ? `$${totalPrice.toFixed(2)}` : 'N/A'
 
   return (
      <tr>
-              <td className="event-info">
-                <img className="event-image" src="public/images/icon_ventixe.svg" alt="event" />
-                <div className="event-title">Echo Beats Festival</div>
-                <div className='event-location'>
-                    <div className="event-streetname">Sunset Park</div>
-                    <div className="event-postalcode-city">
-                        <span>12345</span>
-                        <span>LA</span>
-                    </div>
-                </div>
-                
-             
-              </td>
-
-              <td className="event-date">May 20, 2019</td>
-              <td className="event-time">6:00 PM</td>
-              <td className="event-price">$60</td>
-              <td className="event-tickets">2</td>
-              <td className="event-total_price">$120</td>
-              <td>
-                  <Link>
-                    <button className='btn btn-check-event'>Check Event</button>
-                </Link>
-              </td>
-            
-
-              
+      <td className="event-reference">{eventId}</td>
+      <td className="event-info">
+        <div className="event-title">{eventTitle}</div>
+      </td>
+      <td className="event-location">{eventLocation}</td>
+      <td className="event-date">{formattedDate}</td>
+      <td className="event-price">{perTicketPrice !== 'N/A' ? `$${perTicketPrice}` : 'N/A'} </td>
+    <td className='event-tickets'>{ticketQuantity}</td>
+      <td className="event-total">{totalDisplay}</td>
+      <td className="event-action">
+        <Link to={`/events/${eventId}`}>
+          <button className="btn btn-check-event">Check Event</button>
+        </Link>
+      </td>
     </tr>
       
   )

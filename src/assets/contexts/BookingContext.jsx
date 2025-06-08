@@ -15,7 +15,7 @@ export const BookingProvider = ({ children }) => {
         ticketQuantity: 1
     }
     const [formData, setFormData] = useState(initialBookingFormData);
-   const [formErrors, setFormErrors] = useState({}) 
+    const [formErrors, setFormErrors] = useState({}) 
 
    
    // Function to reset form data to its initial state
