@@ -29,7 +29,6 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
 
   // Effect to populate the form when the modal opens or 'item' changes
   useEffect(() => {
-    console.log("EditEvent item prop:", item)
     if (item) {
       // Parse location string back into streetName, postalCode, city
       const locationParts = item.location ? item.location.split(', ').map(part => part.trim()) : ['', '', ''];
@@ -48,7 +47,7 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
         description: item.description || '',
         imageFile: null, // No file initially, user selects new
         imagePreview: item.image || null, // current image URL
-        packages: item.packages ? item.packages.map(pkg => ({
+        packages: item.packages && item.packages.$values ? item.packages.$values.map(pkg => ({
           id: pkg.id, //Keeps existing ID for updates
           title: pkg.title || '',
           seatingArrangement: pkg.seatingArrangement || '',
@@ -150,7 +149,7 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
     })
 
     try {
-                const res = await fetch (`https://eventservice-ggakcsayb6baanh0.swedencentral-01.azurewebsites.net/api/Events/${item.id}`, {
+                const res = await fetch (`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${item.id}`, {
                   method: 'PUT',
                   body: formDataToSend
                  })

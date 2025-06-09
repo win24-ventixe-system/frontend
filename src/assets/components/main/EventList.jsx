@@ -14,7 +14,6 @@ const EventList = () => {
 
         if(res.ok) {
             const response = await res.json()
-            console.log("API Response:", response)
             setEvents(Array.isArray(response.result?.$values) ? response.result.$values : [])
         }
     setLoading(false)
