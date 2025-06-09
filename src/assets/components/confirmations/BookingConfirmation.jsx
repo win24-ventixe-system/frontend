@@ -38,7 +38,7 @@ const ConfirmationPage = () => {
             <div className="confirmation-header">
                 <FaCheckCircle className="success-icon" />
                 <h1>Booking Confirmed!</h1>
-                 {eventId && (
+                 {bookingId && (
                     <div className="booking-reference">
                         <h3>Booking Reference</h3>
                         <p className="reference-code">{bookingDetails.bookingId}</p>
