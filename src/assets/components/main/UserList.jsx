@@ -29,11 +29,13 @@ const UserList = () => {
 
   return (
     <div className='user-list-page'>
-        <div className='page-header'>
-        <button type='button' className='btn btn-admin' onClick={() => setAddUserModalOpen(true)}>Add User</button>
+        <div className='page-header' style={{display: 'flex', justifyContent:'space-between'}}>
+                    <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'}}>Only for ADMIN</span>
+                <button type='button' className='btn btn-admin' onClick={() => setAddUserModalOpen(true)}>Add User</button>
         </div>
 
         <div className='user-list'>
+            
             <img src={UnderConstruction}/>
 
             <UserCard />
