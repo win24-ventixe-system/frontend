@@ -29,7 +29,9 @@ const EventList = () => {
 
   return (
     <div className='event-list-page'>
-        <div className='page-header'>
+        <div className='page-header' >
+            <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'
+}}>Only for ADMIN:</span>
         <button type='button' className='btn btn-admin' onClick={() => setAddModalOpen(true)}>Add Event</button>
         </div>
     <div className='event-list'>

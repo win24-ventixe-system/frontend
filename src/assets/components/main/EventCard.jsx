@@ -42,7 +42,9 @@ const lowestPrice = packages.length > 0
 
       <div className='admin-controls-wrapper'>
         <div className='admin-button' onClick={toggleDropdown} type="button" tabIndex={0} onBlur={() => setDropdownOpen(false)}> 
-              <FaEllipsis className='ellipsis-button'/>
+                      <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'
+}}> ADMIN: <FaEllipsis className='ellipsis-button'/></span>
+              
         </div>
 
         {isDropdownOpen && (<EventDropdown  onDropdownActionClick={handleDropdownActionClick}/> )}
