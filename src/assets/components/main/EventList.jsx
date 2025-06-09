@@ -7,6 +7,7 @@ const EventList = () => {
     const [events, setEvents] = useState([])
     const [loading, setLoading] = useState(true)
     const [isAddModalOpen, setAddModalOpen] = useState(false)
+    
 
 
     const getEvents = async() => {

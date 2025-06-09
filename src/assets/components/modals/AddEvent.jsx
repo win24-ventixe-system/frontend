@@ -102,7 +102,6 @@ const modalContent = (
     <div className="modal" onClick={handleCloseAndReset}>
          <div className='modal-event card' id='add-event-modal'  onClick={(e) => e.stopPropagation()}>
         <div className="card-header">
-        <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'}}>Only for ADMIN</span>
         <h2>Add Event</h2>
         <IoCloseOutline onClick={handleCloseAndReset} className="close-icon"/>
     </div>

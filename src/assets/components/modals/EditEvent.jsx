@@ -77,7 +77,7 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
    const addPackage = () => {
     setFormData(prev => ({
       ...prev,
-      packages: [...prev.packages, { id: Date.now(), title: '', seatingArrangement: '', placement: '', price: '', currency: '$' }]
+      packages: [...prev.packages, { id: Date.now(), title: '', seatingArrangement: '', placement: '', price: 1, currency: '$' }]
     }))
   }
   const removePackage = (index) => {
@@ -118,6 +118,7 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
     }
 
     setFormErrors(errors);
+    console.log("Validation Errors:", errors); // <--- Add this
     return Object.keys(errors).length === 0;
   }
    
@@ -144,7 +145,7 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
       formDataToSend.append(`Packages[${index}].Title`, pkg.title);
       formDataToSend.append(`Packages[${index}].SeatingArrangement`, pkg.seatingArrangement);
       formDataToSend.append(`Packages[${index}].Placement`, pkg.placement);
-      formDataToSend.append(`Packages[${index}].Price`, pkg.price);
+      formDataToSend.append(`Packages[${index}].Price`, parseFloat(pkg.price));
       formDataToSend.append(`Packages[${index}].Currency`, pkg.currency);
     })
 
@@ -163,6 +164,7 @@ const EditEvent = ({ onClose, item, onEventUpdated}) => {
                   onEventUpdated();
                   }
                   onClose()
+                  window.location.reload(); 
                  }
             } catch(err) {
                 console.error("Error submitting form", err)
