@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import UserCard from './UserCard'
 import AddUser from '../modals/AddUser'
-
+import UnderConstruction from '../../images/underconstruction.jpg'
 
 const UserList = () => {
 
@@ -34,10 +34,11 @@ const UserList = () => {
         </div>
 
         <div className='user-list'>
-            <UserCard />
-            <UserCard />
-            <UserCard />
+            <img src={UnderConstruction}/>
 
+            <UserCard />
+            <UserCard />
+            
         </div>
             {isAddUserModalOpen && <AddUser onClose={() => setAddUserModalOpen(false)} />}
 
