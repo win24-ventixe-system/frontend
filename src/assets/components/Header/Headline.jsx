@@ -11,13 +11,13 @@ const Headline = () => {
     if (location.pathname.startsWith('/events/')) return `Event Details`
     if (location.pathname === '/allbookings') return `My Bookings`
     if (location.pathname === '/users') return `Users`
+    if (location.pathname === '/confirmation') return `Booking Confirmation`
 
     return 'Page'
   }
   return (
      <div className='headline'>
         <h1>{getTitle()}</h1>
-        <span className='greetings'>Hello, welcome back</span>
       </div> 
   )
 }

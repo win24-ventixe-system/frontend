@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import UserCard from './UserCard'
 import AddUser from '../modals/AddUser'
-
+import UnderConstruction from '../../images/underconstruction.jpg'
 
 const UserList = () => {
 
@@ -29,15 +29,18 @@ const UserList = () => {
 
   return (
     <div className='user-list-page'>
-        <div className='page-header'>
-        <button type='button' className='btn btn-admin' onClick={() => setAddUserModalOpen(true)}>Add User</button>
+        <div className='page-header' style={{display: 'flex', justifyContent:'space-between'}}>
+                    <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'}}>Only for ADMIN</span>
+                <button type='button' className='btn btn-admin' onClick={() => setAddUserModalOpen(true)}>Add User</button>
         </div>
 
         <div className='user-list'>
-            <UserCard />
-            <UserCard />
-            <UserCard />
+            
+            <img src={UnderConstruction}/>
 
+            <UserCard />
+            <UserCard />
+            
         </div>
             {isAddUserModalOpen && <AddUser onClose={() => setAddUserModalOpen(false)} />}
 

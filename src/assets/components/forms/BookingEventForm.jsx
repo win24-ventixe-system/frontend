@@ -28,7 +28,7 @@ const BookingEventForm = () => {
             if(res.ok) {
                 const response = await res.json()
                 setEvent(response.result)
-                resetFormData(response.result.id, response.result.packages?.$values?.[0]?.id || '')
+                resetFormData(response.result.id, '')
                 }
                 
             }
@@ -49,12 +49,30 @@ const BookingEventForm = () => {
                 if (!validateForm()) {
                     return; // Don't submit if validation fails
                     }
+                
+                    const payload = {
+                    eventId: formData.eventId,
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    email: formData.email,
+                    streetName: formData.streetName,
+                    postalCode: formData.postalCode,
+                    city: formData.city,
+                    packageOption: formData.selectedPackageId, // ✅ Mapped correctly
+                    ticketQuantity: formData.ticketQuantity
+                };
              try {
-                const res = await fetch (`https://bookingservice-g4gtc7akfwg4gsfm.swedencentral-01.azurewebsites.net/api/Bookings`, {
+                const res = await fetch (`https://bookingservice-ventixe-2025.azurewebsites.net/api/Bookings`, {
+                    
                 method: 'POST',
                 headers: { 'Content-Type':'application/json'},
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
                  })
+                 console.log("Payload to API:", {
+                    eventId: formData.eventId,
+                    selectedPackageId: formData.selectedPackageId,
+                    ticketQuantity: formData.ticketQuantity
+                    });
                  if(!res.ok) {
                     const errorData = await res.text()
                     console.error("Booking failed:", res.status, errorData)
@@ -65,15 +83,15 @@ const BookingEventForm = () => {
                    
                     // Prepare data to pass to the confirmation page
                     const bookingDetailsToConfirm = {
-                    ...bookingFormData, // All basic form data
-                    title: eventDetails.title, // Event title from eventDetails prop
-                    eventDate: eventDetails.eventDate, // Event date from eventDetails prop
-                    location: eventDetails.location, // Event location from eventDetails prop
+                    ...formData, // All basic form data
+                    title: event.title, // Event title from eventDetails prop
+                    eventDate: event.eventDate, // Event date from eventDetails prop
+                    location: event.location, // Event location from eventDetails prop
                     selectedPackage: selectedPackage, // Full selected package object
                     totalPrice: totalPrice,
                     bookingReference: bookingResponse.bookingReference || 'N/A' // Use actual booking reference
                 }
-                     
+                console.log("Sending booking data:", formData);
                 resetFormData(event.id, event.packages?.$values?.[0]?.id || '')
         
                  navigate('/confirmation', { state: { bookingDetails: bookingDetailsToConfirm } })
@@ -166,7 +184,7 @@ const BookingEventForm = () => {
                 <div className='form-group'>
                 <label className='form-label'>Packages</label>
                 <select className="form-input" name="selectedPackageId" value={formData.selectedPackageId} onChange={handleChange} required>
-                    <option value="">Select a Package</option>
+                    <option value="" disabled>Select a Package</option>
                     {packages.map(pkg => (
                     <option key={pkg.id} value={pkg.id.toString()}>
                         {pkg.title} - {pkg.currency}{pkg.price}

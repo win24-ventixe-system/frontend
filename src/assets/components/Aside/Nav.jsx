@@ -35,11 +35,13 @@ const Nav = () => {
       <BsTicketPerforated />
       <span>Events</span>
       </NavLink>
-
+      
       <NavLink to="/allbookings" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
       <GrCheckboxSelected />
       <span>My Bookings</span>
       </NavLink>
+
+      {/* */}
 
       <NavLink to="/users" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
       <FaUsers />
