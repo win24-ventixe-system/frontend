@@ -8,6 +8,7 @@ import Main from './assets/pages/Main'
 import EventPage from './assets/pages/EventPage'
 import EventDetailsPage from './assets/pages/EventDetailsPage'
 import BookingEventPage from './assets/pages/BookingEventPage'
+import MyBookingsListPage from './assets/pages/MyBookingsListPage'
 import BookingsListPage from './assets/pages/BookingsListPage'
 import ConfirmationPage from './assets/components/confirmations/BookingConfirmation'
 import UserPage from './assets/pages/UserPage'
@@ -33,6 +34,7 @@ function App() {
         <Route path="/events" element={<EventPage />} />
         <Route path="/events/:id" element={<EventDetailsPage />} />
         <Route path="/allbookings" element={<BookingsListPage />} />
+        <Route path="/mybookings" element={<MyBookingsListPage />} />
         <Route path="/events/booking/:id" element={<BookingEventPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path='/users' element={<UserPage/>} />

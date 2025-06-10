@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import UserCard from './UserCard'
 import AddUser from '../modals/AddUser'
-import UnderConstruction from '../../images/underconstruction.jpg'
+import UnderConstruction from './UnderConstruction'
+
 
 const UserList = () => {
 
@@ -35,7 +36,7 @@ const UserList = () => {
 
         <div className='user-list'>
             
-            <img src={UnderConstruction}/>
+             <UnderConstruction />
 
             <UserCard />
             <UserCard />
