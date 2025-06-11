@@ -12,7 +12,7 @@ const UnderConstruction = () => {
         textAlign: 'center',
         marginTop: '2rem',
       }}>
-        <h1>UNDER CONSTRUCTION</h1>
+       
          <img src={UnderConstructionImg}  alt="Under Construction"/>
     </div>
 

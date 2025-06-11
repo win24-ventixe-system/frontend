@@ -19,7 +19,8 @@ const ConfirmationPage = () => {
     }
 
     const {
-        bookingId,
+        bookingReference,
+        bookingDate,
         title,
         eventDate,
         location: eventLocation, // Renamed to avoid conflict with `location` from useLocation
@@ -31,19 +32,22 @@ const ConfirmationPage = () => {
         totalPrice,
     } = bookingDetails;
 
-    const formattedEventDate = eventDate ? new Date(eventDate).toLocaleDateString() : 'N/A';
+    const formattedEventDate = eventDate ? new Date(eventDate).toLocaleDateString('en-SE')  : 'N/A'
+     const formattedBookingDate = bookingDate ? new Date(bookingDate).toLocaleDateString('en-SE')  : 'N/A'
 
     return (
         <div className="confirmation-container card">
             <div className="confirmation-header">
                 <FaCheckCircle className="success-icon" />
-                <h1>Booking Confirmed!</h1>
-                 {bookingId && (
+                    <h1>Booking Confirmed!</h1>
+                 
                     <div className="booking-reference">
-                        <h3>Booking Reference</h3>
-                        <p className="reference-code">{bookingDetails.bookingId}</p>
+                        <h3>Booking Reference:</h3>
+                        <p className="reference-code">{bookingReference}</p>
                     </div>
-                )}
+                    <div className='booking-date'>
+                        <h3>Booked on: <span>{formattedBookingDate}</span></h3> 
+                    </div>
                
             </div>
 

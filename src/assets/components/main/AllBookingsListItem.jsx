@@ -6,36 +6,48 @@ const AllBookingsListItem = ({booking}) => {
 
 
    const {
-  eventTitle = 'Untitled Event',
+  id,
+  bookingDate,
+  eventTitle ,
   eventDate,
-  totalPrice,
   ticketQuantity,
+  perTicketPrice,
   eventId,
-  eventLocation = 'Unknown Location'
-} = booking;
+  eventLocation,
+  firstName,
+  lastName,
+  email
+} = booking
 
+console.log("Booking object:", booking);
   const formattedDate = eventDate
-    ? new Date(eventDate).toLocaleDateString()
-    : 'Date not provided';
+    ? new Date(eventDate).toLocaleDateString('en-SE') 
+    : 'N/A'
+  
+     const formattedBookingDate = bookingDate
+    ? new Date(bookingDate).toLocaleDateString('en-SE') 
+    : 'N/A'
 
-  const perTicketPrice = ticketQuantity && totalPrice
-    ? (totalPrice / ticketQuantity).toFixed(2)
-    : 'N/A';
 
-  const totalDisplay = totalPrice ? `$${totalPrice.toFixed(2)}` : 'N/A'
+ 
 
   return (
      <tr>
-      <td className="event-reference">{eventId}</td>
-      <td className="event-info">
-        <div className="event-title">{eventTitle}</div>
+      <td className="event-reference-data">{id}</td>
+      <td className="booking-date-data">{formattedBookingDate}</td>
+      <td className="booking-client-data">
+        <div>{firstName}{lastName}</div>
+        <div className='client-email-data'>{email}</div>
       </td>
-      <td className="event-location">{eventLocation}</td>
-      <td className="event-date">{formattedDate}</td>
-      <td className="event-price">{perTicketPrice !== 'N/A' ? `$${perTicketPrice}` : 'N/A'} </td>
-    <td className='event-tickets'>{ticketQuantity}</td>
-      <td className="event-total">{totalDisplay}</td>
-      <td className="event-action">
+      <td className="event-info-data"> 
+        <div className="event-title-data">{eventTitle}</div> 
+        <div> {eventLocation}</div>
+        </td>
+      <td className="event-date-data">{formattedDate}</td>
+      <td className="event-price-data">${perTicketPrice}</td>
+      <td className='event-tickets-data'>{ticketQuantity}</td>
+      <td className="event-total-data">${ Number(booking.totalPrice).toFixed(2) }</td>
+      <td className="event-action-data">
         <Link to={`/events/${eventId}`}>
           <button className="btn btn-check-event">Check Event</button>
         </Link>

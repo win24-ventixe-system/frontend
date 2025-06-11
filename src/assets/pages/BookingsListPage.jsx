@@ -1,61 +1,80 @@
-import { useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react'
 import AllBookingsListItem from '../components/main/AllBookingsListItem'
-import { IoHomeOutline } from 'react-icons/io5'
 
-const MyBookings = () => {
-     
-  const location = useLocation();
-  const [bookings, setBookings] = useState(location.state?.bookingList || [])
+const AllBookings = () => {
+  // State that  hold bookings and loading status
+  const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-try {
-  const res = await fetch('https://bookingservice-ventixe-2025.azurewebsites.net/api/Bookings')
-      const bookingData = await res.json()
-      const bookings = bookingData.result
-      console.log(bookings[0])
+      setLoading(true) // Show loading indicator while fetching
+      try {
+      //const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-      // Fetch event data for each booking
+       // Fetch all bookings from backend
+      //const res = await fetch(`${API_BASE_URL}/api/Bookings`)
+        const res = await fetch('https://bookingservice-ventixe-2025.azurewebsites.net/api/Bookings')
+        if (!res.ok) throw new Error(`Booking fetch failed: ${res.status}`);
+
+    const data = await res.json()
+    const bookingList = data.result || []
+
+    // For each booking, fetch related event info
       const bookingsWithEventInfo = await Promise.all(
-        bookings.map(async (b) => {
-          const eventRes = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${b.eventId}`);
-          const event = await eventRes.json();
-          return {
-            ...b,
-            eventTitle: event.title,
-            eventDate: event.date,
-            eventLocation: event.location,
-            totalPrice: event.price * b.ticketQuantity
-          }
-        })
-      )
+            bookingList.map(async (b) => {
+              try {
+                // Fetch event details using eventId
+              const eventRes = await fetch(`https://eventservice-ventixe-2025-evecf8epa0azawhq.swedencentral-01.azurewebsites.net/api/Events/${b.eventId}`);
+              if (!eventRes.ok) throw new Error();
 
-    setBookings(bookingsWithEventInfo);
-    }
-        catch(err) {
-          console.error('Failed to load bookings:', err)
-        } finally{setLoading(false)}
-  }
-   if (!location.state?.bookingList) {
-    fetchData();
-  }
-}, [location.state])
+            const eventData = await eventRes.json()
+              const event = eventData.result;
 
+              // Find the package the user booked to get price
+              const bookedPackage = event.packages?.$values?.find(pkg => pkg.id === b.packageId)
+            const packagePrice = bookedPackage?.price ?? 0
+
+            // Return enriched booking object with event info
+              return {
+                ...b,
+                eventTitle: event.title,
+                eventDate: event.eventDate,
+                eventLocation: event.location,
+                perTicketPrice: packagePrice,
+              };
+            } catch {
+              // Handle failed event fetch gracefully with fallbacks
+              return {
+                ...b,
+                eventTitle: 'Event not found',
+                eventDate: null,
+                eventLocation: 'Unknown',
+                perTicketPrice: 0,
+                firstName: b.owner?.firstName || b.firstName || 'N/A',
+                lastName: b.owner?.lastName || b.lastName || 'N/A',
+                email: b.owner?.email || b.email || 'N/A',
+              }
+            }
+          })
+        );
+        // Update state with all enriched bookings
+        setBookings(bookingsWithEventInfo)
+      } catch (err) {
+        console.error('Failed to load bookings:', err)
+        setBookings([]) // Empty list on error
+      } finally {
+        setLoading(false)  // Hide loading indicator
+
+      }
+    };
+
+    fetchData()  // Trigger fetch when component mounts
+  }, []);
+ // Show loading message while fetching data
   if (loading) return <p>Loading bookings...</p>
 
-  if (!bookings.length) {
-    return (
-      <div className="confirmation-container card">
-        <p>No bookings</p>
-        <Link to="/" className="btn btn-primary">
-          <IoHomeOutline className="icon" /> Go to Homepage
-        </Link>
-      </div>
-    )
-  }
+ 
 
         
   return (
@@ -63,9 +82,10 @@ try {
       <table>
         <thead>
           <tr>
-            <th className="event-reference">Booking Reference </th>
+            <th className="booking-reference">Booking Reference </th>
+            <th className="booking-date">Booking Date</th>
+            <th className="booking-client">Booking Client</th>
             <th className="event-info">Event </th>
-            <th className="event-location">Location</th>
             <th className="event-date">Date</th>
             <th className="event-price">Price</th>
             <th className="event-tickets">Tickets</th>
@@ -74,9 +94,10 @@ try {
           </tr>
         </thead>
         <tbody>
+          
 
                {bookings.map((booking) => (
-              <AllBookingsListItem key={booking.bookingId} booking={booking} />
+              <AllBookingsListItem key={booking.id} booking={booking} />
           ))}
 
      
@@ -86,5 +107,4 @@ try {
   )
 }
 
-export default MyBookings
-
+export default AllBookings

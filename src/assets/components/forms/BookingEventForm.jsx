@@ -43,6 +43,16 @@ const BookingEventForm = () => {
         }, [getEvent]) 
 
         
+                // Get current selected package and total price
+                    const packages = event.packages?.$values || []
+                    const selectedPackage = packages.find(pkg => pkg.id === formData.selectedPackageId)
+                    const totalPrice = selectedPackage ? parseFloat(selectedPackage.price) * formData.ticketQuantity : 0
+                     // Lowest Price display 
+                    const lowestPrice = packages.length > 0
+                    ? Math.min(...packages.map(pkg => Number(pkg.price)))
+                    : null
+                    // Date Formatting  
+                    const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : ''
 
           const handleSubmit = async (e) => {
             e.preventDefault()
@@ -58,29 +68,30 @@ const BookingEventForm = () => {
                     streetName: formData.streetName,
                     postalCode: formData.postalCode,
                     city: formData.city,
-                    packageOption: formData.selectedPackageId, // ✅ Mapped correctly
-                    ticketQuantity: formData.ticketQuantity
+                    PackageId: formData.selectedPackageId, 
+                    ticketQuantity: parseInt(formData.ticketQuantity),
+                    eventPrice: parseFloat(selectedPackage.price), 
+                    totalPrice: parseFloat(totalPrice.toFixed(2))
                 };
+                console.log("Sending booking data payload:", payload);
              try {
-                const res = await fetch (`https://bookingservice-ventixe-2025.azurewebsites.net/api/Bookings`, {
+                //const API_BASE_URL = import.meta.env.VITE_API_URL;
+                //const response = await fetch(`${API_BASE_URL}/api/Bookings`, {
+                const response = await fetch (`https://bookingservice-ventixe-2025.azurewebsites.net/api/Bookings`, {
                     
                 method: 'POST',
                 headers: { 'Content-Type':'application/json'},
                 body: JSON.stringify(payload)
                  })
-                 console.log("Payload to API:", {
-                    eventId: formData.eventId,
-                    selectedPackageId: formData.selectedPackageId,
-                    ticketQuantity: formData.ticketQuantity
-                    });
-                 if(!res.ok) {
+                 
+                 if(!response.ok) {
                     const errorData = await res.text()
-                    console.error("Booking failed:", res.status, errorData)
+                    console.error("Booking failed:", response.status, errorData)
                  } else {
                     console.log("Booking succesful")
-                    const bookingResponse = await res.json()
+                    const bookingResponse = await response.json()
                    
-                   
+                    console.log("Backend Booking Response:", bookingResponse); 
                     // Prepare data to pass to the confirmation page
                     const bookingDetailsToConfirm = {
                     ...formData, // All basic form data
@@ -89,7 +100,8 @@ const BookingEventForm = () => {
                     location: event.location, // Event location from eventDetails prop
                     selectedPackage: selectedPackage, // Full selected package object
                     totalPrice: totalPrice,
-                    bookingReference: bookingResponse.bookingReference || 'N/A' // Use actual booking reference
+                    bookingReference: bookingResponse.id, // Use actual booking reference
+                    bookingDate: bookingResponse.bookingDate
                 }
                 console.log("Sending booking data:", formData);
                 resetFormData(event.id, event.packages?.$values?.[0]?.id || '')
@@ -100,16 +112,7 @@ const BookingEventForm = () => {
                 console.error("Error submitting booking", err)
             }
           }
-          // Get current selected package and total price
-                    const packages = event.packages?.$values || []
-                    const selectedPackage = packages.find(pkg => pkg.id === formData.selectedPackageId)
-                    const totalPrice = selectedPackage ? parseFloat(selectedPackage.price) * formData.ticketQuantity : 0
-                     // Lowest Price display 
-                    const lowestPrice = packages.length > 0
-                    ? Math.min(...packages.map(pkg => Number(pkg.price)))
-                    : null
-                    // Date Formatting  
-                    const formattedDate = event.eventDate ? event.eventDate.substring(0, 10) : ''
+         
             
 
     return (

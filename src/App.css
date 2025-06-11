@@ -1543,20 +1543,18 @@ footer a:hover {
         }
 }
    
-
 /* =========================
    MY BOOKINGS TABLE
 ========================= */
-
     table {
         height: 90%;
-    width: 100%;
-    border-collapse: collapse;
+        width: 100%;
+        border-collapse: collapse;
     } 
    
     table tr {
         display: grid;
-        grid-template-columns: 2fr 3fr 3fr 2fr 1fr 1fr 1fr 2fr;
+        grid-template-columns: 1fr 1fr 2fr 2fr  1fr 1fr 1fr 1fr 1fr;
         gap: 1rem;
         align-items: center;
         width: 100%;
@@ -1577,33 +1575,16 @@ footer a:hover {
 
     table th, table td {
         text-align: left;
+        font-size: .9rem;;
     } 
  
 .albookings-table {
     .event-reference {
         font-size: .9rem;
     }
-   
-
-         .event-title {
-        grid-area: title;
-        color: var(--text-color);
-        font-weight: 600;
+    .event-title-data {
+        font-weight: 700;
     }
-
-    .event-streetname {
-        color: var(--text-muted-color);
-
-    }
-
-    .event-postalcode-city {
-        color: var(--text-muted-color);
-        display: flex;
-        gap: .5rem;
-    }
-
-    
-    
 }
     
     /* =========================
@@ -1734,24 +1715,26 @@ footer a:hover {
     color: var(--primary-100); 
     margin-bottom: 15px;
     } 
-    }
-    .confirmation-header h1 {
+
+     h1 {
         color: var(--headline-color);
         font-size: 2rem;
         margin-bottom: 1rem;
     }
-.confirmation-header p {
+     p {
         color: var(--text-color);
         font-size: 1.2em;
         padding: .3rem;;
         }
+        
         .booking-reference .reference-code {
     font-size: .8rem;
     color: var(--text-color);
-    background-color: var(--background-color);
-    border-radius: 5px;
     display: inline-block;
+    margin-bottom: .8rem;
 }
+    }
+   
 
 
 .booking-details {
