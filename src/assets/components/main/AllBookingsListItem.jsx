@@ -36,7 +36,7 @@ console.log("Booking object:", booking);
       <td className="event-reference-data">{id}</td>
       <td className="booking-date-data">{formattedBookingDate}</td>
       <td className="booking-client-data">
-        <div>{firstName}{lastName}</div>
+        <div className='client-fullname-data'>{firstName} {lastName}</div>
         <div className='client-email-data'>{email}</div>
       </td>
       <td className="event-info-data"> 

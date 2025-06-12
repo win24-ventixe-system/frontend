@@ -16,9 +16,11 @@ import SignUp from './assets/pages/SignUp'
 import SignIn from './assets/pages/SignIn'
 import { EventProvider } from './assets/contexts/EventContext'
 import { BookingProvider } from './assets/contexts/BookingContext'
+import { AuthProvider } from './assets/contexts/AuthContext'
 
 function App() {
   return (
+    <AuthProvider>
     <EventProvider>
       <BookingProvider>
         <Routes>
@@ -45,7 +47,7 @@ function App() {
       </BookingProvider>
     
     </EventProvider>
-
+</AuthProvider>
   )
 }
 

@@ -1,24 +1,61 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import GoogleIcon from '../../assets/images/icon_google.svg'
+import { useAuth } from '../contexts/AuthContext'
+
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    isPersistent: true
-  })
-  const handleChange = (e) => {
-    const { name, type, value, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
-  }
-   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Logging in with:', formData);
-    // AuthContext or an API here
+   const {
+      formData,
+      handleChange,
+      validateForm,
+      resetFormData,
+      message,
+      setMessage,
+      formErrors,
+    } = useAuth()
+
+const handleSubmit = async (e) => {
+     e.preventDefault();
+    setLoading(true);
+    setMessage({ type: '', text: '' })
+
+    if (!validateForm()) {
+      setLoading(false);
+      return
+    }
+    try {
+      
+      const response =  await fetch('https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password:formData.password,
+          isPersistent: formData.isPersistent,
+        }),
+      })
+
+// Google Sign-in (OAuth) 
+const handleGoogleSignIn = () => {
+  window.location.href = 'https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin-google';
+}
+
+ if (response.ok) {
+        setMessage({ type: 'success', text: 'Sign in succesfully!' })
+        resetFormData()
+  }  else {
+        const errorData =  await response.json();
+        setMessage({ type: 'error', text: errorData.error || 'Failed to sign in. Please try again.' });
+      }
+    } catch (error) {
+      console.error('Error during sign in:', error);
+      setMessage({ type: 'error', text: 'Network error. Please try again later.' });
+    } finally {
+      setLoading(false)
+    }
   }
 
    return (
@@ -28,7 +65,7 @@ const Login = () => {
         </div>
 
         <div className='card-body'>
-        <div className="btn btn-external">
+        <div type="button" className="btn btn-external" noValidate onSubmit={handleGoogleSignUp }>
               <img src={GoogleIcon} alt="Google Icon"/>
               <span>Sign In with Google</span>
          </div>
@@ -47,6 +84,8 @@ const Login = () => {
               placeholder='Email'
               required
             />
+          {formErrors.email && <p className="form-error">{formErrors.email}</p>}
+
           </div>
 
           <div className='form-group'>
@@ -60,6 +99,7 @@ const Login = () => {
               placeholder='Password'
               required
             />
+            {formErrors.password && <p className="form-error">{formErrors.password}</p>}
           </div>
 
           <div className='form-group-checkbox'>
@@ -76,7 +116,10 @@ const Login = () => {
             <label className="checkbox-label">
               Remember me <a href="#">Forgot Password?</a>
             </label>
+          {formErrors.isPersistent && <p className="form-error">{formErrors.isPersistent}</p>}
+
           </div>
+          {message.text && <div className={`form-message ${message.type}`}>{message.text}</div>}
 
           <div className="form-group">
             <button type="submit" className="btn btn-auth-submit">Log in</button>
