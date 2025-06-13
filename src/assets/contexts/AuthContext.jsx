@@ -1,6 +1,9 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
+
+
+export const AuthProvider = ({ children }) => {
 
 const defaultFormData = {
   firstName: '',
@@ -9,46 +12,86 @@ const defaultFormData = {
   password: '',
   confirmPassword: '',
   terms: true,
+  isPersistent: true
 }
-
-export const AuthProvider = ({ children }) => {
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState(defaultFormData)
   const [formErrors, setFormErrors] = useState({});
   const [message, setMessage] = useState({ type: '', text: '' })
+
+  //FOR AUTHENTICATION
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [authToken, setAuthToken] = useState(null)
+
+   useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setAuthToken(storedToken);
+      setIsAuthenticated(true);
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
+    }))
+
+     // Clear error for the field being typed in
+    setFormErrors((prevErrors) => ({
+    ...prevErrors,
+    [name]: '', 
+  }))
+  }
 
   const resetFormData = () => {
     setFormData(defaultFormData);
     setFormErrors({});
-    setMessage({ type: '', text: '' });
-  };
+    setMessage({ type: '', text: '' })
+  }
+const login = async (email, password, isPersistent) => {
+        try {
+            const response = await fetch('https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, isPersistent }),
+            })
 
-  const validateForm = () => {
-    const errors = {};
-
-    if (!formData.firstName) errors.firstName = 'First name is required.';
-    if (!formData.lastName) errors.lastName = 'Last name is required.';
-    if (!formData.email) errors.email = 'Email is required.';
-    if (!formData.password) errors.password = 'Password is required.';
-    if (!formData.confirmPassword) errors.confirmPassword = 'Please confirm your password.';
-    if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match.';
+            if (response.ok) {
+                const data = await response.json();
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    setAuthToken(data.token);
+                    setIsAuthenticated(true);
+                    setMessage({ type: 'success', text: 'Sign in successfully!' })
+                    return true;
+                } else {
+                    setMessage({ type: 'error', text: 'Sign in failed: No token received.' })
+                    return false;
+                }
+            } else {
+                const errorData = await response.json();
+                const errorMessage = errorData.error || errorData.Email?.[0] || errorData.Password?.[0] || 'Failed to sign in. Please try again.'
+                setMessage({ type: 'error', text: errorMessage })
+                return false
+            }
+        } catch (error) {
+            console.error('Error during sign in:', error);
+            setMessage({ type: 'error', text: 'Network error. Please try again later.' });
+            return false
+        }
     }
-    if (!formData.terms) errors.terms = 'You must accept the terms.';
 
-    setFormErrors(errors);
-    setMessage({ type: '', text: '' });
 
-    return Object.keys(errors).length === 0;
-  };
-
+  // ---  LOGOUT FUNCTIONALITY ---
+  const logout = () => {
+    localStorage.removeItem('token')// Remove token from localStorage
+    setAuthToken(null) // Clear token from context state
+    setIsAuthenticated(false) // Set authenticated status to false
+    setMessage({ type: 'success', text: 'Logged out successfully.' });
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -57,10 +100,13 @@ export const AuthProvider = ({ children }) => {
         handleChange,
         formErrors,
         setFormErrors,
-        validateForm,
         resetFormData,
         message,
         setMessage,
+        isAuthenticated,
+        authToken,
+        login,
+        logout
       }}
     >
       {children}

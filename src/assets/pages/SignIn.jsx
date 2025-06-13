@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState  } from 'react'
+import { Link, useNavigate  } from 'react-router-dom'
 import GoogleIcon from '../../assets/images/icon_google.svg'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -13,51 +13,53 @@ const Login = () => {
       message,
       setMessage,
       formErrors,
+      login,
+      isAuthenticated
     } = useAuth()
 
+
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
+
+    useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard') // Navigate to dashboard
+    }
+  }, [isAuthenticated, navigate])
+
 const handleSubmit = async (e) => {
-     e.preventDefault();
+     e.preventDefault()
     setLoading(true);
     setMessage({ type: '', text: '' })
 
     if (!validateForm()) {
-      setLoading(false);
+      setLoading(false)
       return
     }
+    
     try {
-      
-      const response =  await fetch('https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password:formData.password,
-          isPersistent: formData.isPersistent,
-        }),
-      })
+      const success = await login(formData.email, formData.password, formData.isPersistent)
 
-// Google Sign-in (OAuth) 
-const handleGoogleSignIn = () => {
-  window.location.href = 'https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin-google';
-}
-
- if (response.ok) {
-        setMessage({ type: 'success', text: 'Sign in succesfully!' })
-        resetFormData()
-  }  else {
-        const errorData =  await response.json();
-        setMessage({ type: 'error', text: errorData.error || 'Failed to sign in. Please try again.' });
+      if (success) {
+        // AuthContext has already handledsetting the token in localStorage and updating isAuthenticated state.
+        resetFormData(); // Clear form data after successful login
       }
     } catch (error) {
-      console.error('Error during sign in:', error);
-      setMessage({ type: 'error', text: 'Network error. Please try again later.' });
+      console.error('Login component - Error during sign in:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred during login.' })
     } finally {
-      setLoading(false)
+      setLoading(false); // Always reset loading state
     }
   }
 
+  const handleGoBack = () => {
+        navigate(-1) // goes back one entry in the history stack
+    }
+// Google Sign-in (OAuth) 
+const handleGoogleSignIn = () => {
+  window.location.href = 'https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin-google'
+}
    return (
      <div className='sign-in card' id="login">
         <div className="card-header">
@@ -65,10 +67,10 @@ const handleGoogleSignIn = () => {
         </div>
 
         <div className='card-body'>
-        <div type="button" className="btn btn-external" noValidate onSubmit={handleGoogleSignUp }>
+        <button type="button" className="btn btn-external" noValidate onClick={handleGoogleSignIn }>
               <img src={GoogleIcon} alt="Google Icon"/>
               <span>Sign In with Google</span>
-         </div>
+         </button>
 
          <div className="divider"> <span>OR</span></div>
 
@@ -119,10 +121,11 @@ const handleGoogleSignIn = () => {
           {formErrors.isPersistent && <p className="form-error">{formErrors.isPersistent}</p>}
 
           </div>
-          {message.text && <div className={`form-message ${message.type}`}>{message.text}</div>}
+          {message.text && <div className={`form-error-message ${message.type}`}>{message.text}</div>}
 
           <div className="form-group">
             <button type="submit" className="btn btn-auth-submit">Log in</button>
+            <button type="button" className='btn btn-back' onClick={handleGoBack}>Go back</button>
           </div>
         </form>
 
@@ -130,6 +133,7 @@ const handleGoogleSignIn = () => {
             <div className='card-footer'>
               <span>Don't have an account?</span>
               <Link to="/signup">Sign Up</Link>
+              
 
             </div>
         </div>

@@ -37,6 +37,8 @@ const Nav = () => {
       </NavLink>
 
         <NavLink to="/mybookings" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
+        <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'
+}}>USER:</span>
       <GrCheckboxSelected />
       <span>My Bookings</span>
       </NavLink>

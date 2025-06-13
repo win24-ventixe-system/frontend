@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import PortalLayout from './assets/layouts/PortalLayout'
 import CenterLayout from './assets/layouts/CenterLayout'
 
@@ -31,8 +31,7 @@ function App() {
      
       <Route element={<PortalLayout />}>
         
-        <Route path="/" element={<Main />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/events" element={<EventPage />} />
         <Route path="/events/:id" element={<EventDetailsPage />} />
         <Route path="/allbookings" element={<BookingsListPage />} />

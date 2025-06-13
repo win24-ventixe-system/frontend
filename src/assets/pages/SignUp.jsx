@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import GoogleIcon from '../../assets/images/icon_google.svg'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -14,8 +14,8 @@ const SignUp = () => {
     setMessage,
     formErrors,
   } = useAuth()
-
-
+const navigate = useNavigate();
+const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
      e.preventDefault();
@@ -29,7 +29,7 @@ const SignUp = () => {
 
     try {
       
-      const response =  await fetch('https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/index.html/api/account/signup', {
+      const response =  await fetch('https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,18 +45,30 @@ const SignUp = () => {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Account created successfully!' })
         resetFormData()
+        navigate('/dashboard')
   }  else {
-        const errorData =  await response.json();
-        setMessage({ type: 'error', text: errorData.error || 'Failed to create account. Please try again.' });
-      }
-    } catch (error) {
+      let errorData = {}
+        try {
+          errorData = await response.json();
+        } catch (err) {
+          errorData = { error: 'Unexpected error. Please try again.' };
+        }
+        // Handle model validation errors like
+      const errorMessage =
+        errorData.error || errorData.Email?.[0] || 'Signup failed. Please check your input.';
+
+      setMessage({ type: 'error', text: errorMessage })
+          }
+        } catch (error) {
       console.error('Error during sign up:', error);
       setMessage({ type: 'error', text: 'Network error. Please try again later.' });
     } finally {
       setLoading(false)
     }
   }
-
+ const handleGoBack = () => {
+        navigate(-1) // goes back one entry in the history stack
+    }
   // Google Sign-up (OAuth) 
 const handleGoogleSignUp = () => {
   window.location.href = 'https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signin-google';
@@ -70,14 +82,17 @@ const handleGoogleSignUp = () => {
         </div>
         
         <div className='card-body'>
-        <button type="button" className="btn btn-external" noValidate onSubmit={handleGoogleSignUp }>
-              <img src={GoogleIcon} />
+        <button type="button" className="btn btn-external" noValidate onClick={handleGoogleSignUp }>
+              <img src={GoogleIcon} alt="Google Icon"/>
               <span>Sign Up with Google</span>
          </button>
        
         <div className="divider"> <span>or</span></div>
 
         <form className='sign-up-form' noValidate onSubmit={handleSubmit}>
+        
+                    {message.text && <div className={`form-error-message ${message.type}`}>{message.text}</div>}
+
           <div className='form-group'>
             <label className='form-label'>First Name</label>
             <input className="form-input" type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder='First Name' required />
@@ -121,12 +136,11 @@ const handleGoogleSignUp = () => {
             {formErrors.terms && <p className="form-error">{formErrors.terms}</p>}
 
           </div>
-          {message.text && <div className={`form-message ${message.type}`}>{message.text}</div>}
 
           <div className="form-group">
-            <button type="submit" className="btn btn-auth-submit" disabled={loading}>Create Account
-              {loading ? 'Creating...' : 'Create Account'}
-            </button>
+            <button type="submit" className="btn btn-auth-submit" disabled={loading}>Create Account</button>
+            <button type="button" className='btn btn-back' onClick={handleGoBack}>Go back</button>
+
           </div>
         </form>
         <div className='card-footer'>
