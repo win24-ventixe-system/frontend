@@ -1,9 +1,24 @@
 import React from 'react'
 import { MdOutlineLogout } from "react-icons/md"
+import { useAuth } from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const SignOut = () => {
+    const { logout, isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+
+    // Function to handle the sign-out click
+    const handleSignOut = () => {
+        logout() // Call the logout function from AuthContext
+        navigate('/') 
+    }
+
+    if (!isAuthenticated) {
+        return null; // Don't render the sign-out button if not logged in
+    }
+  
   return (
-    <button className='btn btn-signout'>
+    <button type="button" className='btn btn-signout' onClick={handleSignOut}>
         <MdOutlineLogout />
         <span>Sign out</span>
     </button>

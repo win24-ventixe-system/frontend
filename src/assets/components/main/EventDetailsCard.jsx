@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { CiCalendar, CiLocationOn } from "react-icons/ci"
-import { IoChevronBackCircleOutline } from "react-icons/io5";
+import { IoChevronBackCircleOutline } from "react-icons/io5"
 
 
 

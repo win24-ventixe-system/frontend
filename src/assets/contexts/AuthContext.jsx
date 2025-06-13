@@ -90,7 +90,7 @@ const login = async (email, password, isPersistent) => {
     localStorage.removeItem('token')// Remove token from localStorage
     setAuthToken(null) // Clear token from context state
     setIsAuthenticated(false) // Set authenticated status to false
-    setMessage({ type: 'success', text: 'Logged out successfully.' });
+  
   }
   return (
     <AuthContext.Provider

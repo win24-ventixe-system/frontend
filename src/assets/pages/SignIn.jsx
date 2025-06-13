@@ -2,17 +2,18 @@ import React, { useEffect, useState  } from 'react'
 import { Link, useNavigate  } from 'react-router-dom'
 import GoogleIcon from '../../assets/images/icon_google.svg'
 import { useAuth } from '../contexts/AuthContext'
+import { IoChevronBackCircleOutline } from "react-icons/io5"
 
 
 const Login = () => {
    const {
       formData,
       handleChange,
-      validateForm,
       resetFormData,
       message,
       setMessage,
       formErrors,
+      setFormErrors,
       login,
       isAuthenticated
     } = useAuth()
@@ -28,12 +29,32 @@ const Login = () => {
     }
   }, [isAuthenticated, navigate])
 
+  const validateLoginForm = () => { 
+        const errors = {};
+
+        if (!formData.email) {
+            errors.email = 'Email is required.'
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = 'Email address is invalid.'
+        }
+
+        if (!formData.password) {
+            errors.password = 'Password is required.';
+        } else if (formData.password.length < 8) {
+            errors.password = 'Password must be at least 8 characters long.'
+        }
+
+        setFormErrors(errors);
+        setMessage({ type: '', text: '' })
+        return Object.keys(errors).length === 0;
+    }
+
 const handleSubmit = async (e) => {
      e.preventDefault()
     setLoading(true);
     setMessage({ type: '', text: '' })
 
-    if (!validateForm()) {
+    if (!validateLoginForm()) {
       setLoading(false)
       return
     }
@@ -42,7 +63,6 @@ const handleSubmit = async (e) => {
       const success = await login(formData.email, formData.password, formData.isPersistent)
 
       if (success) {
-        // AuthContext has already handledsetting the token in localStorage and updating isAuthenticated state.
         resetFormData(); // Clear form data after successful login
       }
     } catch (error) {
@@ -125,7 +145,8 @@ const handleGoogleSignIn = () => {
 
           <div className="form-group">
             <button type="submit" className="btn btn-auth-submit">Log in</button>
-            <button type="button" className='btn btn-back' onClick={handleGoBack}>Go back</button>
+            <button type="button" className='btn btn-back' onClick={handleGoBack}>
+              <IoChevronBackCircleOutline /> Go back</button>
           </div>
         </form>
 

@@ -65,7 +65,6 @@ const Nav = () => {
 </div>
       
   
-  
     <NavLink to="" className="nav-bottom">
         <SignOut />
      </NavLink>

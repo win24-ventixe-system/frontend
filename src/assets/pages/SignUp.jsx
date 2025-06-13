@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import GoogleIcon from '../../assets/images/icon_google.svg'
 import { useAuth } from '../contexts/AuthContext'
+import { IoChevronBackCircleOutline } from "react-icons/io5"
 
 
 const SignUp = () => {
@@ -139,7 +140,8 @@ const handleGoogleSignUp = () => {
 
           <div className="form-group">
             <button type="submit" className="btn btn-auth-submit" disabled={loading}>Create Account</button>
-            <button type="button" className='btn btn-back' onClick={handleGoBack}>Go back</button>
+            <button type="button" className='btn btn-back' onClick={handleGoBack}>
+              <IoChevronBackCircleOutline /> Go back</button>
 
           </div>
         </form>

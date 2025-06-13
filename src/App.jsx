@@ -31,7 +31,8 @@ function App() {
      
       <Route element={<PortalLayout />}>
         
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/events" element={<EventPage />} />
         <Route path="/events/:id" element={<EventDetailsPage />} />
         <Route path="/allbookings" element={<BookingsListPage />} />
