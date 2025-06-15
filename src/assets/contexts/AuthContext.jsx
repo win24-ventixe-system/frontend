@@ -90,6 +90,7 @@ const login = async (email, password, isPersistent) => {
                 }
             } else {
                 const errorData = await response.json();
+                console.log("Error response JSON from backend:", errorData)
                 const errorMessage = errorData.error || errorData.Email?.[0] || errorData.Password?.[0] || 'Failed to sign in. Please try again.'
                 setMessage({ type: 'error', text: errorMessage })
                 return false

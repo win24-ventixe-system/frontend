@@ -2,6 +2,8 @@ import React from 'react'
 
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { MdOutlineLogout } from "react-icons/md"
+
 
 const SignOut = () => {
     const { logout, isAuthenticated } = useAuth()
@@ -20,6 +22,7 @@ const SignOut = () => {
   return (
         
         <span onClick={handleSignOut}>
+          <MdOutlineLogout />
           Sign out
           </span>
    

@@ -66,9 +66,7 @@ const Nav = () => {
 </div>
       
   
-    <div to="" className="nav-bottom btn btn-signout-nav">
-                     <MdOutlineLogout />
-
+    <div className="nav-bottom ">
         <SignOut />
      </div>
   

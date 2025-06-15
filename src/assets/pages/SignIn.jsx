@@ -11,7 +11,6 @@ const Login = () => {
       handleChange,
       resetFormData,
       message,
-      setMessage,
       formErrors,
       setFormErrors,
       login,
@@ -25,12 +24,12 @@ const Login = () => {
 
     useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard') // Navigate to dashboard
+      navigate('/events') // Navigate to events
     }
   }, [isAuthenticated, navigate])
 
   const validateLoginForm = () => { 
-        const errors = {};
+        const errors = {}
 
         if (!formData.email) {
             errors.email = 'Email is required.'
@@ -45,14 +44,12 @@ const Login = () => {
         }
 
         setFormErrors(errors);
-        setMessage({ type: '', text: '' })
         return Object.keys(errors).length === 0;
     }
 
 const handleSubmit = async (e) => {
      e.preventDefault()
     setLoading(true);
-    setMessage({ type: '', text: '' })
 
     if (!validateLoginForm()) {
       setLoading(false)
@@ -65,6 +62,7 @@ const handleSubmit = async (e) => {
       if (success) {
         resetFormData(); // Clear form data after successful login
       }
+      setLoading(false);
     } catch (error) {
       console.error('Login component - Error during sign in:', error)
       setMessage({ type: 'error', text: 'An unexpected error occurred during login.' })
