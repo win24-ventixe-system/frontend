@@ -1,6 +1,8 @@
 import React from 'react'
 import { CgProfile } from "react-icons/cg"
 import { GoSignOut } from "react-icons/go"
+import SignOut from '../Aside/SignOut'
+import { MdOutlineLogout } from "react-icons/md"
 
 
 
@@ -13,8 +15,8 @@ const AccountDropdown = ({ onProfileClick }) => {
                 My Profile
             </span>
             <span className="dropdown-action"> 
-                <GoSignOut />
-                Sign Out 
+               <MdOutlineLogout />
+               <SignOut />
             </span>
 
 

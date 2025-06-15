@@ -4,6 +4,7 @@ import VentixeIcon from '/images/icon_ventixe.svg'
 import { LuLayoutDashboard } from "react-icons/lu"
 import { BsTicketPerforated } from "react-icons/bs"
 import { GrCheckboxSelected } from "react-icons/gr"
+import { MdOutlineLogout } from "react-icons/md"
 import { FaUsers } from "react-icons/fa"
 import SignOut from './SignOut'
 
@@ -65,9 +66,11 @@ const Nav = () => {
 </div>
       
   
-    <NavLink to="" className="nav-bottom">
+    <div to="" className="nav-bottom btn btn-signout-nav">
+                     <MdOutlineLogout />
+
         <SignOut />
-     </NavLink>
+     </div>
   
    </aside>
   )    

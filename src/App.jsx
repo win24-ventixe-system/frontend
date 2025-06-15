@@ -17,6 +17,7 @@ import SignIn from './assets/pages/SignIn'
 import { EventProvider } from './assets/contexts/EventContext'
 import { BookingProvider } from './assets/contexts/BookingContext'
 import { AuthProvider } from './assets/contexts/AuthContext'
+import VerifyEmail from './assets/pages/VerifyEmail'
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
       <Route element={<CenterLayout />}>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+
+
       </Route>
      
       <Route element={<PortalLayout />}>

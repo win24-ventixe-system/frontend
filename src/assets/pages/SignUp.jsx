@@ -9,27 +9,69 @@ const SignUp = () => {
      const {
     formData,
     handleChange,
-    validateForm,
     resetFormData,
+    formErrors,
     message,
     setMessage,
-    formErrors,
+    login
+    
   } = useAuth()
+const [localFormErrors, setLocalFormErrors] = useState({});
 const navigate = useNavigate();
 const [loading, setLoading] = useState(false)
 
+ const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
+
+        if (!formData.firstName.trim()) {
+            newErrors.firstName = "First name is required.";
+            isValid = false;
+        }
+        if (!formData.lastName.trim()) {
+            newErrors.lastName = "Last name is required.";
+            isValid = false;
+        }
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required.";
+            isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = "Email address is invalid.";
+            isValid = false;
+        }
+        if (!formData.password) {
+            newErrors.password = "Password is required.";
+            isValid = false;
+        } else if (formData.password.length < 6) { // Example: password must be at least 6 chars
+            newErrors.password = "Password must be at least 6 characters.";
+            isValid = false;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match.";
+            isValid = false;
+        }
+        if (!formData.terms) {
+            newErrors.terms = "You must accept the Terms and Conditions.";
+            isValid = false;
+        }
+
+         setLocalFormErrors(newErrors); // Update local form errors state
+        return isValid;
+ }
     const handleSubmit = async (e) => {
      e.preventDefault();
     setLoading(true);
     setMessage({ type: '', text: '' })
 
+    // client-side validatio
     if (!validateForm()) {
       setLoading(false);
       return
     }
 
+
     try {
-      
+       //Call the backend signup API
       const response =  await fetch('https://accountservice-ventixe-2025-ahbeagh7dvgabtg8.swedencentral-01.azurewebsites.net/api/Accounts/signup', {
         method: 'POST',
         headers: {
@@ -44,10 +86,12 @@ const [loading, setLoading] = useState(false)
       })
 
       if (response.ok) {
-        setMessage({ type: 'success', text: 'Account created successfully!' })
-        resetFormData()
-        navigate('/dashboard')
-  }  else {
+        setMessage({ type: 'success', text: 'Account created! Please check your email for a verification code.' });
+        resetFormData(); // Clear the form
+        navigate('/verify-email', { state: { email: formData.email } });
+              
+
+      }  else {
       let errorData = {}
         try {
           errorData = await response.json();

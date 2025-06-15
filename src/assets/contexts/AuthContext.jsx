@@ -21,14 +21,28 @@ const defaultFormData = {
   //FOR AUTHENTICATION
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [authToken, setAuthToken] = useState(null)
+  const [authUser, setAuthUser] = useState(null) //stores authenticated user details
 
+  // EFFECT TO LOAD AUTHENTICATION STATE FROM LOCAL STORAGE ON INITIAL LOAD
    useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
+    const storedToken = localStorage.getItem('token')
+    const storedUser = localStorage.getItem('user') // Gets stored user data
+
+    if (storedToken && storedUser) {
       setAuthToken(storedToken);
-      setIsAuthenticated(true);
-    }
-  }, [])
+
+      try {
+                // Parse the stored user string back into an object
+                setAuthUser(JSON.parse(storedUser));
+            } catch (e) {
+                console.error("Failed to parse stored user data:", e);
+                // Clear corrupted data if parsing fails
+                localStorage.removeItem('user');
+                setAuthUser(null);
+            }
+            setIsAuthenticated(true)
+      }
+      }, [])
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
@@ -60,11 +74,14 @@ const login = async (email, password, isPersistent) => {
             })
 
             if (response.ok) {
-                const data = await response.json();
+                const data = await response.json()
                 if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    setAuthToken(data.token);
-                    setIsAuthenticated(true);
+                    localStorage.setItem('token', data.token)
+                    localStorage.setItem('user', JSON.stringify(data.user))//storing user
+
+                    setAuthToken(data.token)
+                    setAuthUser(data.user); //Update authUser state
+                    setIsAuthenticated(true)
                     setMessage({ type: 'success', text: 'Sign in successfully!' })
                     return true;
                 } else {
@@ -89,6 +106,7 @@ const login = async (email, password, isPersistent) => {
   const logout = () => {
     localStorage.removeItem('token')// Remove token from localStorage
     setAuthToken(null) // Clear token from context state
+    setAuthUser(null) //Clear authUser from context state
     setIsAuthenticated(false) // Set authenticated status to false
   
   }
@@ -105,6 +123,7 @@ const login = async (email, password, isPersistent) => {
         setMessage,
         isAuthenticated,
         authToken,
+        authUser,
         login,
         logout
       }}

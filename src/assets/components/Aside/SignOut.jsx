@@ -1,5 +1,5 @@
 import React from 'react'
-import { MdOutlineLogout } from "react-icons/md"
+
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,10 +18,11 @@ const SignOut = () => {
     }
   
   return (
-    <button type="button" className='btn btn-signout' onClick={handleSignOut}>
-        <MdOutlineLogout />
-        <span>Sign out</span>
-    </button>
+        
+        <span onClick={handleSignOut}>
+          Sign out
+          </span>
+   
   )
 }
 
