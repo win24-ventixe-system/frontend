@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react'
+import { jwtDecode } from 'jwt-decode'
 
 const AuthContext = createContext();
 
@@ -32,17 +33,26 @@ const defaultFormData = {
       setAuthToken(storedToken);
 
       try {
-                // Parse the stored user string back into an object
-                setAuthUser(JSON.parse(storedUser));
-            } catch (e) {
-                console.error("Failed to parse stored user data:", e);
-                // Clear corrupted data if parsing fails
-                localStorage.removeItem('user');
-                setAuthUser(null);
-            }
-            setIsAuthenticated(true)
+        const decoded = jwtDecode(storedToken)
+        let roles = decoded.role || decoded.roles || []
+        if (typeof roles === 'string') roles = [roles]
+               if (storedUser) {
+          const parsedUser = JSON.parse(storedUser)
+          setAuthUser({ ...parsedUser, roles }) // attach roles to user
+        }else {
+          // fallback, if no storedUser but token is present
+          setAuthUser({ roles })
+        }
+        setIsAuthenticated(true);
+      } catch (e) {
+        console.error('Failed to decode token or parse stored user:', e)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        setAuthUser(null)
+        setIsAuthenticated(false)
       }
-      }, [])
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
@@ -75,6 +85,7 @@ const login = async (email, password, isPersistent) => {
 
             if (response.ok) {
                 const data = await response.json()
+                console.log("Login API response data:", data)
                 if (data.token) {
                     localStorage.setItem('token', data.token)
                     localStorage.setItem('user', JSON.stringify(data.user))//storing user
@@ -101,7 +112,6 @@ const login = async (email, password, isPersistent) => {
             return false
         }
     }
-
 
   // ---  LOGOUT FUNCTIONALITY ---
   const logout = () => {

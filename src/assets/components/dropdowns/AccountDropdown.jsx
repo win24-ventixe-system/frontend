@@ -15,7 +15,7 @@ const AccountDropdown = ({ onProfileClick }) => {
                 My Profile
             </span>
             <span className="dropdown-action"> 
-               <MdOutlineLogout />
+                <MdOutlineLogout />
                <SignOut />
             </span>
 

@@ -9,10 +9,11 @@ import { FaUsers } from "react-icons/fa"
 import SignOut from './SignOut'
 
 
+// Pass user as a prop or get it from context/store
 
+const Nav = ({user}) => {
+    const isAdmin = user?.roles?.includes("Admin");
 
-
-const Nav = () => {
   return (
     
    <aside className='sidebar'>
@@ -43,30 +44,34 @@ const Nav = () => {
       <GrCheckboxSelected />
       <span>My Bookings</span>
       </NavLink>
+ {isAdmin && (
+            <>
+              <NavLink to="/allbookings" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
+                <span style={{
+                  color: 'red', fontWeight: 'bold', fontSize: '14px', backgroundColor: '#ffeaea',
+                  padding: '4px 8px', borderRadius: '4px'
+                }}>ADMIN:</span>
+                <GrCheckboxSelected />
+                <span>All Bookings</span>
+              </NavLink>
 
-      
-      <NavLink to="/allbookings" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
-        <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'
-}}>ADMIN:</span>
-      <GrCheckboxSelected />
-      <span>All Bookings</span>
-      </NavLink>
+              <NavLink to="/users" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
+                <span style={{
+                  color: 'red', fontWeight: 'bold', fontSize: '14px', backgroundColor: '#ffeaea',
+                  padding: '4px 8px', borderRadius: '4px'
+                }}>ADMIN:</span>
+                <FaUsers />
+                <span>Users</span>
+              </NavLink>
+            </>
+          )}
 
-      {/* */}
-
-      <NavLink to="/users" className={({ isActive }) => isActive ? 'navlink active' : 'navlink'}>
-      <span style={{ color: 'red', fontWeight: 'bold',fontSize: '14px', backgroundColor: '#ffeaea', padding: '4px 8px', borderRadius: '4px'
-}}>ADMIN:</span>
-      <FaUsers />
-      <span>Users</span>
-      </NavLink>
-
-     
-    </nav>
+        </nav>
 </div>
       
   
-    <div className="nav-bottom ">
+    <div className="nav-bottom btn btn-signout">
+      <MdOutlineLogout />
         <SignOut />
      </div>
   

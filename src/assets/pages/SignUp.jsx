@@ -88,7 +88,7 @@ const [loading, setLoading] = useState(false)
       if (response.ok) {
         setMessage({ type: 'success', text: 'Account created! Please check your email for a verification code.' });
         resetFormData(); // Clear the form
-        navigate('/verify-email', { state: { email: formData.email } });
+        navigate('/verify-email', { state: { email: formData.email, password: formData.password, isPersistent: formData.isPersistent } });
               
 
       }  else {

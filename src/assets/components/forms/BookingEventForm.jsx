@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom'
 import { IoChevronBackCircleOutline } from "react-icons/io5"
 import { CiCalendar, CiLocationOn } from "react-icons/ci"
 import { BookingContext } from '../../contexts/BookingContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 
 
@@ -16,6 +17,8 @@ const BookingEventForm = () => {
         validateForm,
         resetFormData 
     } = useContext(BookingContext)
+
+    const { isAuthenticated } = useAuth()
 
     const [event, setEvent] = useState({})
  
@@ -145,6 +148,9 @@ const BookingEventForm = () => {
             
     </div>
          <div className='card-body'>
+      
+ {isAuthenticated ? (
+
         <form className='book-event-form' noValidate onSubmit={handleSubmit}>
             <div className='form-group'>
             
@@ -217,14 +223,24 @@ const BookingEventForm = () => {
             </div>
             
         </form>     
-        
-         </div>
-        
-     
-      </div>
+        ) : (
+                <div className="sign-buttons-form">
+                                        <h3>You must be signed in to book this event.</h3>
+                                        <p>
+                                            <Link to="/signin" className="btn btn-primary" state={{ from: `/book-event/${event.id}` }}>Sign In</Link> 
+                                            or{' '}
+                                            <Link to="/signup" className="btn btn-secondary" state={{ from: `/book-event/${event.id}` }}>Sign Up</Link>
+                                        </p>
+                                        <Link to={`/events/${event.id}`} className='btn btn-back mt-3'>
+                                            <IoChevronBackCircleOutline />
+                                            Back to Event
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
     </div>
-
-  )
+    )
 }
 
 export default BookingEventForm

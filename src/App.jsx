@@ -29,8 +29,6 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
-
-
       </Route>
      
       <Route element={<PortalLayout />}>
@@ -44,9 +42,10 @@ function App() {
         <Route path="/events/booking/:id" element={<BookingEventPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path='/users' element={<UserPage/>} />
-
+        
 
       </Route>
+
         </Routes>
       </BookingProvider>
     
